@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import os
 # from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 
@@ -14,7 +15,12 @@ def create_app():
     
     app = Flask(__name__, template_folder="templates")
     # As declared in config.py
-    app.config.from_object("config.DevelopmentConfig")
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URI")
+    
+    # app.config.from_object("config.DevelopmentConfig")
+    app.config['SECRET_KEY'] = SECRET_KEY
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
     
     # configure_uploads(app, (ms_images, ms_data))
     
