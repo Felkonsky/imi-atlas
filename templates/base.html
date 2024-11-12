@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <title>Medienatlas - {% block title %}{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Felix A. Goebel" />
+    <meta name="description" content="Medienatlas der Stattlichen Kunstsammlungen Dresden" />
+    <meta name="keywords" content="Medienstation, SKD, Medieninhalte, Ausstellungen, Digital" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicons/favicon_skd_16.png') }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicons/favicon_skd_32.png') }}" />
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ url_for('static', filename='favicons/favicon_skd_48.png') }}" />
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='favicons/favicon_skd_192.png') }}" />
+    <link rel="apple-touch-icon" type="image/png" sizes="167x167" href="{{ url_for('static', filename='favicons/favicon_skd_167.png') }}" />
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="{{ url_for('static', filename='favicons/favicon_skd_180.png') }}" />
+    <script>
+      // Define global variables using Jinja2-rendered paths
+      window.imiApiPath = "{{ url_for('get_all_mediastations') }}";
+      window.imiBasePath = "{{ url_for('get_mediastation', id='') }}";
+    </script>
+  </head>
+  <body>
+    <header class="catalog-header" id="base-header">
+      <span class="skd-brand">
+        <span class="skd-logo-dot"></span>
+        <span class="skd-logo-text bold">
+          <span class="skd-logo-text-name">
+            Staatliche<br />
+            Kunstsammlungen
+          </span>
+          <span class="skd-logo-text-location">Dresden</span>
+        </span>
+      </span>
+    </header>
+    <main id="main-content" class="main-content">{%block content%} {% endblock %}</main>
+
+    {% block script %}{% endblock %}
+  </body>
+</html>

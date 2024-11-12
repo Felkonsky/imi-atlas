@@ -1,0 +1,7 @@
+jsdoc.json
+__pycache__
+.vscode/
+*.pyc
+.DS_Store
+config.py
+data/

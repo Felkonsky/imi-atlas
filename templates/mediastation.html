@@ -1,0 +1,122 @@
+{% extends 'base.html' %} {% block title %} Interaktive Museumsinstallation {% endblock %} {% block content %}
+<div class="ms-container">
+  <div class="ms-header">
+    <div class="first-row btn-before"><a href="{{ url_for('index') }}" id="go-back" class="nav-btn btn-back">zurück</a></div>
+    <div class="second-row">
+      <h1>{{ mediastation.title }}</h1>
+      <!-- <button>favorisieren</button> -->
+    </div>
+  </div>
+
+  <div class="ms-book">
+    <div class="ms-book-page-one">
+      <div class="ms-images">
+        <img class="ms-image" src="{{ url_for('get_image', img=mediastation.image_url) }}" alt="{{mediastation.title}}" />
+      </div>
+      <div class="ms-play"><a href="" class="ms-play-btn bold">Medienstation abspielen</a></div>
+
+      <div class="ms-description pb-25">
+        <h2>Beschreibung</h2>
+        <p>{% if mediastation.description %} {{ mediastation.description }} {% endif %}</p>
+      </div>
+      <div class="ms-wrapper">
+        <div class="ms-involved">
+          <h2>Beteiligte</h2>
+          <ul>
+            {% if mediastation.involved %}
+            <li><!-- for person in involved print list here --></li>
+            {% else %}
+            <li>Unbekannt</li>
+            {% endif%}
+          </ul>
+        </div>
+        <div class="ms-comment">
+          <h2>Kommentar</h2>
+          {% if mediastation.comments %}
+          <p><!-- for comment in comments print list here --></p>
+          {% else %}
+          <p>Kein Kommentar vorhanden.</p>
+          {% endif%}
+        </div>
+      </div>
+    </div>
+    <div class="ms-book-page-two">
+      <div class="ms-general pb-25">
+        <h2>Allgemeine Informationen</h2>
+        <table class="ms-inf">
+          <tr>
+            <th>Ausstellung</th>
+            <td>{{ exhibition.title }}</td>
+          </tr>
+          <tr>
+            <th>Museum</th>
+            <td>{{ exhibition.location }}</td>
+          </tr>
+          <tr>
+            <th>Zeitraum</th>
+            <td>{{ exhibition.start_date[8:10] }}.{{ exhibition.start_date[5:7] }}.{{ exhibition.start_date[:4] }} &horbar; {{ exhibition.end_date[8:10] }}.{{ exhibition.end_date[5:7] }}.{{ exhibition.end_date[:4] }}</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="height: 10px"></td>
+          </tr>
+          <tr>
+            <th>Vermittlungsziel</th>
+            <td>{{ mediastation.goal }}</td>
+          </tr>
+          <tr>
+            <th>Zielgruppe</th>
+            <td>{{ mediastation.target }}</td>
+          </tr>
+          <tr>
+            <th>Umfang</th>
+            <td>{{ mediastation.scope }}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="ms-media pb-25">
+        <h2>Umsetzung</h2>
+        <div id="js-filter-link" class="ms-wrapper">
+          <div class="ms-media-col">
+            <h3 class="c-r">Medienarten</h3>
+            <ul>
+              {% for mt in mediatypes %}
+              <li class="realization" data-type="media_type"><a href="{{ url_for('index') }}">{{ mt.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="ms-media-col">
+            <h3 class="c-g">Interaktionen</h3>
+            <ul>
+              {% for it in interactions %}
+              <li class="realization" data-type="interaction_type"><a href="{{ url_for('index') }}">{{ it.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="ms-media-col">
+            <h3 class="c-b">Visualisierungen</h3>
+            <ul>
+              {% for viz in visualizations %}
+              <li class="realization" data-type="visualization_type"><a href="{{ url_for('index') }}">{{ viz.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  const filterTableHTMLElement = document.querySelector('#js-filter-link');
+  filterTableHTMLElement.addEventListener('click', function (event) {
+    if (event.target.matches('a')) {
+      const mediaType = event.target.parentElement.getAttribute('data-type');
+      const value = event.target.innerHTML;
+      const activeFilters = { [mediaType]: { [value]: 'checked' } };
+      sessionStorage.removeItem('activeFilters');
+      sessionStorage.setItem('activeFilters', JSON.stringify(activeFilters));
+    }
+  });
+</script>
+{% endblock %}
