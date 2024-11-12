@@ -2,11 +2,27 @@ from app import create_app
 
 skd_app = create_app()
 
-# development
-if __name__ == '__main__':
-    skd_app.run(host="0.0.0.0", debug=True, port=8080)
+if skd_app is None:
+    print("Error: skd_app was not created.")
+else:
+    print("skd_app created successfully.")
+    
+# Run with waitress in production
+if __name__ == "__main__":
+    print("Server running on port 8080")
+    from waitress import serve
+    try:
+        serve(skd_app, host="0.0.0.0", port=8080, threads=4)
+    except Exception as e:
+        print(f"Error starting waitress: {e}")
 
-# production
+
+
+# development
+# if __name__ == '__main__':
+#     skd_app.run(host="0.0.0.0", port=8080)
+
+# # production
 # if __name__ == "__main__":
 #     from waitress import serve
-#     serve(app, host="0.0.0.0", port=8080)ç
+#     serve(skd_app, host="0.0.0.0", port=8080)
