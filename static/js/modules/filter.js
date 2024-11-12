@@ -65,7 +65,7 @@ function disableFilters(filters) {
     return filters.includes(liElement.getAttribute('data-value'));
   });
   liArray.forEach((li) => {
-    if (li.getAttribute('data-state') !== 'dechecked') li.classList.add('filter-disabled');
+    if (li.getAttribute('data-state') === 'unchecked') li.classList.add('filter-disabled');
   });
 }
 
