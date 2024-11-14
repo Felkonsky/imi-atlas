@@ -107,7 +107,13 @@
     <!-- <div class="col slidercontainer">
       <input id="slidesize" type="range" min="50" max="350" step="1" value="150" aria-label="Adjust grid-image size" aria-valuemin="50" aria-valuemax="350" aria-valuenow="150" oninput="this.setAttribute('aria-valuenow', this.value);" />
     </div> -->
-    <!-- <div class="col switcher" id="switchercontainer"><input aria-label="Switch information visualization type" type="checkbox" id="switchviews" name="switch" checked /></div> -->
+    <div class="col" id="container-object-view-toggle">
+      <label for="object-view-toggle" id="object-view-toggle-label">
+        <input aria-label="Toggle information visualization type" type="checkbox" id="object-view-toggle" checked />
+        <svg id="icon-image" class="icon"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-image"></use></svg>
+        <svg id="icon-glyph" class="icon"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-glyph"></use></svg>
+      </label>
+    </div>
   </div>
   <div class="scroll-objectview">
     <div class="spacer">

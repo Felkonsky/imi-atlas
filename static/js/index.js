@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { fetchData } from './modules/api.js';
 import * as filterFunc from './modules/filter.js';
+import * as glyphFunc from './modules/glyph.js';
 
 /**
  * Elements used for managing and displaying Interactive Media Installations on the index page.
@@ -28,11 +29,23 @@ const resetFiltersElement = document.getElementById('filter-reset');
  */
 let initialData = null;
 
+let isImageView = true;
+
+const vizToggleHTMLElement = document.getElementById('object-view-toggle-label');
+
+vizToggleHTMLElement.addEventListener('click', function (event) {
+  if (event.target === vizToggleHTMLElement) {
+    isImageView = !isImageView;
+    renderGrid(initialData);
+  }
+});
+
 // Fetch data from the API based on the globally set path 'imiApiPath'
 fetchData(imiApiPath).then((data) => {
   sessionStorage.setItem('initialData', JSON.stringify(data));
   initialData = data;
-  filterFunc.render(data);
+  renderGrid(data);
+  // filterFunc.render(data);
 });
 
 document.getElementById('filter-section').addEventListener('click', (event) => {
@@ -51,7 +64,8 @@ document.getElementById('filter-section').addEventListener('click', (event) => {
       filterFunc.clearFilterState(filterType, filterValue);
       previousFilterElement = liHTMLElement;
     }
-    filterFunc.render(initialData, previousFilterElement);
+    renderGrid(initialData, previousFilterElement);
+    // filterFunc.render(initialData, previousFilterElement);
   }
 });
 
@@ -60,6 +74,34 @@ resetFiltersElement.addEventListener('click', function () {
   filterFunc.setActiveFilters();
   sessionStorage.removeItem('activeFilters');
   document.querySelectorAll('li.filter-item').forEach((item) => item.setAttribute('data-state', 'unchecked'));
-  filterFunc.render(initialData);
+  renderGrid(initialData);
+  // filterFunc.render(initialData);
   console.log('Filtersettings have been reset.');
 });
+
+function renderGrid(imiObjects, previousFilterElement = null) {
+  const filteredData = filterFunc.applyFilters(imiObjects);
+  const gridHTML = filteredData.map((imi) => `<div class="grid-item" filter-id="${imi.id}"></div>`).join('');
+  document.getElementById('griddy').innerHTML = gridHTML;
+
+  filterFunc.render(filteredData, previousFilterElement);
+
+  if (isImageView) {
+    renderImages(filteredData);
+  } else {
+    glyphFunc.render(filteredData);
+  }
+}
+
+function renderImages(data) {
+  data.forEach((imi) => {
+    const gridItem = document.querySelector(`.grid-item[filter-id="${imi.id}"]`);
+    if (gridItem) {
+      gridItem.innerHTML = `
+        <a href="${window.imiBasePath}${imi.id}">
+          <img class="grid-item-img" src="${imi.image}" alt="${imi.name}">
+          <span class="aria-hidden">${imi.name}</span>
+        </a>`;
+    }
+  });
+}

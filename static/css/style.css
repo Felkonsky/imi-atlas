@@ -41,6 +41,7 @@ a {
   --skd-lightgrey: #d4d4d4ff;
   --skd-darkgrey: #777;
   --skd-transparent-white: rgba(255, 255, 255, 0.9);
+  --skd-c-lightgray: #e9e8e8;
   /* Dimensions: Overall look and feel */
   --border-width: 2px;
   --spacing: 4rem;
@@ -344,49 +345,6 @@ a {
   top: 0;
   right: -5px;
   content: var(--icon-square-large);
-}
-
-.switcher {
-  display: flex;
-  flex-direction: row;
-  width: max-content;
-  cursor: pointer;
-  height: 24px;
-}
-.switcher input {
-  content: '';
-}
-.switcher:not(:checked)::before,
-.switcher:not(:checked)::after,
-.switcher:has(input:checked)::before,
-.switcher:has(input:checked)::after {
-  position: relative;
-  top: 2px;
-  height: inherit;
-}
-.switcher:not(:checked)::before {
-  transition: background-color var(--animation-speed), fill var(--animation-speed);
-  content: var(--icon-grid-gray);
-}
-.switcher:not(:checked)::after {
-  transition: background-color var(--animation-speed), fill var(--animation-speed);
-  content: var(--icon-glyph-black);
-}
-
-.switcher:has(input:checked)::before {
-  transition: background-color var(--animation-speed), fill var(--animation-speed);
-  content: var(--icon-grid-black);
-}
-.switcher:has(input:checked)::after {
-  transition: background-color var(--animation-speed), fill var(--animation-speed);
-  content: var(--icon-glyph-gray);
-}
-
-.switcher input {
-  appearance: none;
-  outline: none;
-  pointer-events: none;
-  width: 0.5rem;
 }
 
 #objectview {
@@ -693,7 +651,7 @@ a {
 
 .filter-undo {
   /* margin-bottom: 20px; */
-  background-color: #e9e8e8;
+  background-color: var(--skd-c-lightgray);
 }
 
 .realization {
@@ -868,4 +826,44 @@ li > span > svg {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+/* Visualization Toggler */
+#container-object-view-toggle {
+  padding-right: 25px;
+}
+#object-view-toggle-label {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  width: 3.3rem;
+}
+
+#object-view-toggle {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.icon {
+  color: var(--skd-c-lightgray);
+  width: 22px;
+  height: 22px;
+  transition: color var(--animation-speed);
+  pointer-events: none;
+}
+
+#object-view-toggle:checked ~ #icon-image {
+  color: black;
+}
+
+#object-view-toggle:not(:checked) ~ #icon-glyph {
+  color: black;
+}
+
+.grid-item svg {
+  width: var(--grid-item-width);
+  height: auto;
 }

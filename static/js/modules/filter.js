@@ -29,7 +29,7 @@ const resetFiltersContainer = document.getElementById('filter-reset-tab');
 /** @type {HTMLDivElement} Container where installations are rendered */
 const gridElement = document.getElementById('griddy');
 
-function applyFilters(data) {
+export function applyFilters(data) {
   return data.filter((item) => {
     for (const [filterType, filterValues] of Object.entries(activeFilters)) {
       for (const [value, state] of Object.entries(filterValues)) {
@@ -45,7 +45,7 @@ function getAllFilters(liHTMLElements) {
   return Array.from(liHTMLElements, (liHTMLElement) => liHTMLElement.children[1]?.textContent).filter(Boolean);
 }
 
-function getAvailableFilters(data) {
+export function getAvailableFilters(data) {
   let result = [];
   for (const { media_type, interaction_type, visualization_type } of Object.values(data)) {
     const myList = [...new Set([...media_type, ...interaction_type, ...visualization_type])];
@@ -54,7 +54,7 @@ function getAvailableFilters(data) {
   return result;
 }
 
-function getUnavailableFilters(availableFilters) {
+export function getUnavailableFilters(availableFilters) {
   const availablefiltersSet = new Set(availableFilters);
   return allFilters.filter((filterItem) => !availablefiltersSet.has(filterItem));
 }
@@ -69,7 +69,7 @@ function disableFilters(filters) {
   });
 }
 
-function clear() {
+function clearDisabledElements() {
   liHTMLElementsArray.forEach((li) => {
     li.classList.remove('filter-disabled');
   });
@@ -148,21 +148,6 @@ export function clearFilterState(type, value) {
   }
 }
 
-function renderToGrid(imiObjects) {
-  return imiObjects
-    .map(
-      (imi) => `
-        <div class="grid-item" filter-id="${imi.id}">
-          <a href="${window.imiBasePath}${imi.id}">
-            <img class="grid-item-img" src="${imi.image}" alt="${imi.name}">
-            <span class="aria-hidden">${imi.name}</span>
-          </a>
-        </div>
-      `
-    )
-    .join('');
-}
-
 // Show Count of Mediastations
 function updateResults(mediastations) {
   const resultCount = mediastations.length;
@@ -170,7 +155,7 @@ function updateResults(mediastations) {
   resultElement.innerHTML = `${resultCount} Ergebnis${resultCount !== 1 ? 'se' : ''}`;
 }
 
-function updateGridEvent(data) {
+function updateGridEvents(data) {
   const gridItems = document.querySelectorAll('div.grid-item');
   const metaData = document.getElementById('object-metadata');
 
@@ -207,11 +192,10 @@ function updateGridEvent(data) {
 }
 
 export function render(data, previousFilterElement = null) {
-  const filteredData = applyFilters(data);
-  const availableFilters = getAvailableFilters(filteredData);
+  const availableFilters = getAvailableFilters(data);
   const unavailableFilters = getUnavailableFilters(availableFilters);
 
-  clear();
+  clearDisabledElements();
   updateActiveFiltersCache();
   if (previousFilterElement) {
     updateActiveFiltersStyle(previousFilterElement, 'unchecked');
@@ -219,8 +203,8 @@ export function render(data, previousFilterElement = null) {
   applyFilterStyles();
   // Show Reset Button if there are any Filters checked
   resetFiltersContainer.classList.toggle('hidden', Object.keys(activeFilters).length === 0);
-  gridElement.innerHTML = renderToGrid(filteredData);
-  disableFilters(unavailableFilters);
-  updateResults(filteredData);
-  updateGridEvent(filteredData);
+
+  disableFilters(data);
+  updateResults(data);
+  updateGridEvents(data);
 }
