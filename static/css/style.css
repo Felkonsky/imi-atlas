@@ -368,6 +368,17 @@ a {
   width: var(--grid-item-width);
   height: var(--grid-item-width);
   transition: all var(--animation-speed);
+  transform-origin: center;
+  transform: scale(1);
+}
+
+.fade-in {
+  opacity: 0;
+  transition: all var(--animation-speed), opacity 750ms ease-in-out;
+}
+
+.fade-in.show {
+  opacity: 1 !important;
 }
 
 .grid-item a {
@@ -389,6 +400,14 @@ a {
   height: 100%;
   object-fit: cover;
 }
+/* .grid-object {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: scale(0.9);
+} */
 
 .highlight {
   z-index: 150;
@@ -402,108 +421,13 @@ a {
 }
 
 .objectview--no-focus {
-  display: none;
+  opacity: 0;
+  display: block;
   border-bottom: var(--border-width) solid var(--skd-black);
   padding: 0.25rem 0;
   margin: 0 25px;
   font-size: 1rem;
-}
-
-/* 
-   ----------------------
-   ----- G - SEARCH ----- 
-   ----------------------
-*/
-
-.gsearch {
-  width: 100%;
-  font-size: inherit;
-  padding: 10px 30px 10px 10px;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 0;
-  border-color: #000;
-  outline: none;
-  background-color: #fff;
-  line-height: 1.5;
-
-  -webkit-transition: background-color var(--animation-speed);
-  -moz-transition: background-color var(--animation-speed);
-  -o-transition: background-color var(--animation-speed);
-  transition: background-color var(--animation-speed);
-}
-
-.gsearch > button > svg {
-  display: inline-flex;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.search-wrapper {
-  margin-top: 10px;
-  position: relative;
-}
-
-.gsearch-btn {
-  position: absolute;
-  right: 1px;
-  top: 1px;
-  bottom: 1px;
-  display: flex;
-  border-color: transparent;
-  align-items: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  background-color: #fff;
-  cursor: pointer;
-
-  -webkit-transition: background-color var(--animation-speed);
-  -moz-transition: background-color var(--animation-speed);
-  -o-transition: background-color var(--animation-speed);
-  transition: background-color var(--animation-speed);
-}
-.gsearch:hover {
-  background-color: #e5e5e5;
-}
-.gsearch-btn:hover {
-  background-color: #e5e5e5;
-}
-
-/* 
-   ----------------------
-   ----- Exhibitions ----- 
-   ----------------------
-*/
-
-#exhibitions {
-  border-collapse: collapse;
-  width: 100% !important;
-}
-
-#exhibitions td,
-#exhibitions th {
-  font-weight: 200;
-  border: 1px solid #eee;
-  padding: 8px;
-}
-
-#exhibitions th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  font-weight: normal;
-  background-color: #f7f7f7;
-}
-#exhibitions tr {
-  -webkit-transition: background-color var(--animation-speed);
-  -moz-transition: background-color var(--animation-speed);
-  -o-transition: background-color var(--animation-speed);
-  transition: background-color var(--animation-speed);
-}
-
-#exhibitions .hover-me:hover {
-  background-color: #e5e5e5;
-  font-weight: normal !important;
+  transition: opacity var(--animation-speed);
 }
 
 /* MEDIASTATION */
@@ -802,7 +726,7 @@ li > span > svg {
 /* ANIMATIONS */
 
 .fade-in-text {
-  animation: fadeIn 250ms;
+  opacity: 1;
 }
 
 @keyframes fadeIn {
@@ -837,6 +761,7 @@ li > span > svg {
   display: flex;
   justify-content: space-between;
   width: 3.3rem;
+  padding-bottom: 4px;
 }
 
 #object-view-toggle {
@@ -844,7 +769,7 @@ li > span > svg {
   opacity: 0;
   width: 0;
   height: 0;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .icon {
@@ -866,4 +791,7 @@ li > span > svg {
 .grid-item svg {
   width: var(--grid-item-width);
   height: auto;
+}
+.grid-item img {
+  will-change: transform;
 }

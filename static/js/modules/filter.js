@@ -75,7 +75,7 @@ function clearDisabledElements() {
   });
 }
 
-function updateActiveFiltersCache() {
+export function updateActiveFiltersCache() {
   sessionStorage.setItem('activeFilters', JSON.stringify(activeFilters));
   console.info(`The following filter settings were stored in session cache: ${JSON.stringify(activeFilters)}`);
 }
@@ -155,10 +155,9 @@ function updateResults(mediastations) {
   resultElement.innerHTML = `${resultCount} Ergebnis${resultCount !== 1 ? 'se' : ''}`;
 }
 
-function updateGridEvents(data) {
+function updateGridEvent(data) {
   const gridItems = document.querySelectorAll('div.grid-item');
   const metaData = document.getElementById('object-metadata');
-
   gridItems.forEach((gridItem) => {
     const mediastationID = gridItem.getAttribute('filter-id');
     const mediastationData = data.find((imi) => imi.id == mediastationID);
@@ -167,11 +166,9 @@ function updateGridEvents(data) {
     // Object View: Hover Functionality
     gridItem.addEventListener('mouseover', () => {
       const { name: imiTitle, interaction_type: interactionTypes, media_type: mediaTypes, visualization_type: visualizationTypes } = mediastationData;
-
       // Update metadata display
       metaData.innerHTML = imiTitle;
-      metaData.classList.add('visible');
-
+      metaData.classList.add('fade-in-text');
       // Highlight related filter types
       if (mediaTypes) highlightFilter(mediaTypes, 'mt-filter-highlight');
       if (interactionTypes) highlightFilter(interactionTypes, 'it-filter-highlight');
@@ -179,10 +176,7 @@ function updateGridEvents(data) {
     });
 
     gridItem.addEventListener('mouseout', () => {
-      // Clear metadata display
-      metaData.innerHTML = '';
-      metaData.classList.remove('visible');
-
+      metaData.classList.remove('fade-in-text');
       // Remove highlights from filter types
       if (mediastationData.media_type) removeHighlight(mediastationData.media_type, 'mt-filter-highlight');
       if (mediastationData.interaction_type) removeHighlight(mediastationData.interaction_type, 'it-filter-highlight');
@@ -196,7 +190,7 @@ export function render(data, previousFilterElement = null) {
   const unavailableFilters = getUnavailableFilters(availableFilters);
 
   clearDisabledElements();
-  updateActiveFiltersCache();
+
   if (previousFilterElement) {
     updateActiveFiltersStyle(previousFilterElement, 'unchecked');
   }
@@ -206,5 +200,5 @@ export function render(data, previousFilterElement = null) {
 
   disableFilters(data);
   updateResults(data);
-  updateGridEvents(data);
+  updateGridEvent(data);
 }

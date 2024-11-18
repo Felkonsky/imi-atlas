@@ -45,7 +45,6 @@ fetchData(imiApiPath).then((data) => {
   sessionStorage.setItem('initialData', JSON.stringify(data));
   initialData = data;
   renderGrid(data);
-  // filterFunc.render(data);
 });
 
 document.getElementById('filter-section').addEventListener('click', (event) => {
@@ -64,7 +63,8 @@ document.getElementById('filter-section').addEventListener('click', (event) => {
       filterFunc.clearFilterState(filterType, filterValue);
       previousFilterElement = liHTMLElement;
     }
-    renderGrid(initialData, previousFilterElement);
+    renderGrid(initialData, previousFilterElement, true);
+    filterFunc.updateActiveFiltersCache();
     // filterFunc.render(initialData, previousFilterElement);
   }
 });
@@ -79,10 +79,12 @@ resetFiltersElement.addEventListener('click', function () {
   console.log('Filtersettings have been reset.');
 });
 
-function renderGrid(imiObjects, previousFilterElement = null) {
+function renderGrid(imiObjects, previousFilterElement = null, filterHandler = false) {
+  const grid = document.getElementById('griddy');
+
   const filteredData = filterFunc.applyFilters(imiObjects);
   const gridHTML = filteredData.map((imi) => `<div class="grid-item" filter-id="${imi.id}"></div>`).join('');
-  document.getElementById('griddy').innerHTML = gridHTML;
+  grid.innerHTML = gridHTML;
 
   filterFunc.render(filteredData, previousFilterElement);
 
@@ -96,6 +98,7 @@ function renderGrid(imiObjects, previousFilterElement = null) {
 function renderImages(data) {
   data.forEach((imi) => {
     const gridItem = document.querySelector(`.grid-item[filter-id="${imi.id}"]`);
+    gridItem.classList.add('fade-in');
     if (gridItem) {
       gridItem.innerHTML = `
         <a href="${window.imiBasePath}${imi.id}">
@@ -103,5 +106,8 @@ function renderImages(data) {
           <span class="aria-hidden">${imi.name}</span>
         </a>`;
     }
+    setTimeout(() => {
+      gridItem.classList.add('show');
+    }, 5);
   });
 }
