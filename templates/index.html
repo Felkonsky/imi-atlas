@@ -68,7 +68,7 @@
         </div>
       </div>
       <div class="tab" id="viz-tab">
-        <input type="checkbox" name="visualization" id="filter-visualization" checked />
+        <input type="checkbox" name="visualization" id="filter-visualization" />
         <label for="filter-visualization" class="tab_label bold viz-c">Visualisierungen</label>
         <div class="tab__content">
           {% if visualizations %}
@@ -117,7 +117,7 @@
     </div> -->
     <div class="col" id="container-object-view-toggle">
       <label for="object-view-toggle" id="object-view-toggle-label">
-        <input aria-label="Toggle information visualization type" type="checkbox" id="object-view-toggle" checked />
+        <input aria-label="Toggle information visualization type" type="checkbox" id="object-view-toggle" class="block-on-reload" checked />
         <svg id="icon-image" class="icon"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-image"></use></svg>
         <svg id="icon-glyph" class="icon"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-glyph"></use></svg>
       </label>

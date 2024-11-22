@@ -60,7 +60,6 @@ export function getUnavailableFilters(availableFilters) {
 }
 
 function disableFilters(filters) {
-  console.log('hallo', filters);
   const array = Array.from(liHTMLElementsArray);
   const liArray = array.filter((liElement) => {
     return filters.includes(liElement.getAttribute('data-value'));

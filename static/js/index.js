@@ -28,21 +28,34 @@ const resetFiltersElement = document.getElementById('filter-reset');
  * @type {InteractiveMuseumInstallation[]}
  */
 let initialData = null;
+// let isImageView;
 
-let isImageView = true;
+const isInImageViewState = sessionStorage.getItem('objectState');
+let isImageView = isInImageViewState === null || JSON.parse(isInImageViewState);
 
 const vizToggleHTMLElement = document.getElementById('object-view-toggle-label');
+const inputHTMLElement = vizToggleHTMLElement.children[0];
+if (!isImageView) {
+  inputHTMLElement.checked = false;
+}
+inputHTMLElement.classList.remove('block-on-reload');
 
-vizToggleHTMLElement.addEventListener('click', function (event) {
+vizToggleHTMLElement.addEventListener('click', (event) => {
   if (event.target === vizToggleHTMLElement) {
     isImageView = !isImageView;
+
+    sessionStorage.setItem('objectState', JSON.stringify(isImageView));
+    console.info('Toggling the Object View State in Session Cache.');
     renderGrid(initialData);
   }
 });
 
 // Fetch data from the API based on the globally set path 'imiApiPath'
 fetchData(imiApiPath).then((data) => {
-  sessionStorage.setItem('initialData', JSON.stringify(data));
+  if (!sessionStorage.getItem('initialData')) {
+    console.log('Adding initial Data to session cache', sessionStorage.getItem('initialData'));
+    sessionStorage.setItem('initialData', JSON.stringify(data));
+  }
   initialData = data;
   renderGrid(data);
 });
@@ -81,9 +94,16 @@ resetFiltersElement.addEventListener('click', function () {
 
 function renderGrid(imiObjects, previousFilterElement = null) {
   const grid = document.getElementById('griddy');
-
   const filteredData = filterFunc.applyFilters(imiObjects);
-  const gridHTML = filteredData.map((imi) => `<div class="grid-item" filter-id="${imi.id}"></div>`).join('');
+  const gridHTML = filteredData
+    .map(
+      (imi) => `
+    <a href="${window.imiBasePath}${imi.id}">
+      <div class="grid-item" filter-id="${imi.id}"></div>
+      <span class="aria-hidden">${imi.name}</span>
+    </a>`
+    )
+    .join('');
   grid.innerHTML = gridHTML;
 
   filterFunc.render(filteredData, previousFilterElement);
@@ -100,13 +120,7 @@ function renderImages(data) {
   data.forEach((imi) => {
     const gridItem = document.querySelector(`.grid-item[filter-id="${imi.id}"]`);
     gridItem.classList.add('fade-in');
-    if (gridItem) {
-      gridItem.innerHTML = `
-        <a href="${window.imiBasePath}${imi.id}">
-          <img class="grid-item-img " src="${imi.image}" alt="${imi.name}">
-          <span class="aria-hidden">${imi.name}</span>
-        </a>`;
-    }
+    if (gridItem) gridItem.innerHTML = `<img class="grid-item-img " src="${imi.image}" alt="${imi.name}">`;
     setTimeout(() => {
       gridItem.classList.add('show');
     }, 5);

@@ -788,6 +788,22 @@ li > span > svg {
   color: black;
 }
 
+#object-view-toggle.block-on-reload:checked ~ #icon-image {
+  color: white;
+}
+
+#object-view-toggle.block-on-reload:not(:checked) ~ #icon-image {
+  color: white;
+}
+
+#object-view-toggle.block-on-reload:checked ~ #icon-glyph {
+  color: white;
+}
+
+#object-view-toggle.block-on-reload:not(:checked) ~ #icon-glyph {
+  color: white;
+}
+
 .grid-item svg {
   width: var(--grid-item-width);
   height: auto;
