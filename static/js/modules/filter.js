@@ -60,6 +60,7 @@ export function getUnavailableFilters(availableFilters) {
 }
 
 function disableFilters(filters) {
+  console.log('hallo', filters);
   const array = Array.from(liHTMLElementsArray);
   const liArray = array.filter((liElement) => {
     return filters.includes(liElement.getAttribute('data-value'));
@@ -198,7 +199,7 @@ export function render(data, previousFilterElement = null) {
   // Show Reset Button if there are any Filters checked
   resetFiltersContainer.classList.toggle('hidden', Object.keys(activeFilters).length === 0);
 
-  disableFilters(data);
+  disableFilters(unavailableFilters);
   updateResults(data);
   updateGridEvent(data);
 }

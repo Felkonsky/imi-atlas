@@ -15,11 +15,13 @@
     <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='favicons/favicon_skd_192.png') }}" />
     <link rel="apple-touch-icon" type="image/png" sizes="167x167" href="{{ url_for('static', filename='favicons/favicon_skd_167.png') }}" />
     <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="{{ url_for('static', filename='favicons/favicon_skd_180.png') }}" />
+
     <script>
       // Define global variables using Jinja2-rendered paths
       window.imiApiPath = "{{ url_for('get_all_mediastations') }}";
       window.imiBasePath = "{{ url_for('get_mediastation', id='') }}";
     </script>
+    {% block head %} {% endblock %}
   </head>
   <body>
     <header class="catalog-header" id="base-header">

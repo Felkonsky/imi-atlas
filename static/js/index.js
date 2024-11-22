@@ -63,7 +63,7 @@ document.getElementById('filter-section').addEventListener('click', (event) => {
       filterFunc.clearFilterState(filterType, filterValue);
       previousFilterElement = liHTMLElement;
     }
-    renderGrid(initialData, previousFilterElement, true);
+    renderGrid(initialData, previousFilterElement);
     filterFunc.updateActiveFiltersCache();
     // filterFunc.render(initialData, previousFilterElement);
   }
@@ -79,7 +79,7 @@ resetFiltersElement.addEventListener('click', function () {
   console.log('Filtersettings have been reset.');
 });
 
-function renderGrid(imiObjects, previousFilterElement = null, filterHandler = false) {
+function renderGrid(imiObjects, previousFilterElement = null) {
   const grid = document.getElementById('griddy');
 
   const filteredData = filterFunc.applyFilters(imiObjects);
@@ -91,7 +91,8 @@ function renderGrid(imiObjects, previousFilterElement = null, filterHandler = fa
   if (isImageView) {
     renderImages(filteredData);
   } else {
-    glyphFunc.render(filteredData);
+    // glyphFunc.render(filteredData);
+    glyphFunc.createGlyphs(filteredData);
   }
 }
 
@@ -102,7 +103,7 @@ function renderImages(data) {
     if (gridItem) {
       gridItem.innerHTML = `
         <a href="${window.imiBasePath}${imi.id}">
-          <img class="grid-item-img" src="${imi.image}" alt="${imi.name}">
+          <img class="grid-item-img " src="${imi.image}" alt="${imi.name}">
           <span class="aria-hidden">${imi.name}</span>
         </a>`;
     }

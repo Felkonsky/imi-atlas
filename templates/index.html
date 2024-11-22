@@ -1,4 +1,13 @@
-{% extends 'base.html' %} {% block title %} Startseite {% endblock %} {% block content %}
+{% extends 'base.html' %} {% block title %} Startseite {% endblock %} {% block content %} {%block head%}
+<script>
+  if (!sessionStorage.getItem('allItems')) {
+    const allFilterItems = { mediatypes: '{% for mt in mediatypes %}{{ mt.name }},{% endfor %}'.split(',', parseInt('{{ mediatypes | count }}')), interactions: '{% for it in interactions %}{{ it.name }},{% endfor %}'.split(',', parseInt('{{ interactions | count }}')), visualizations: '{% for viz in visualizations %}{{ viz.name }},{% endfor %}'.split(',', parseInt('{{ visualizations | count }}')) };
+    console.log();
+    sessionStorage.setItem('allItems', JSON.stringify(allFilterItems));
+    console.info('Filter items added to Session Cache: ', allFilterItems);
+  }
+</script>
+{% endblock %}
 
 <div id="filterview" class="">
   <div class="header filter-head flex-center" id="filter-header">
@@ -6,7 +15,6 @@
     <div class="filter-col heading bold">Filter</div>
     <div class="filter-col">ausgewählt</div>
   </div>
-  <div class=""></div>
   <div class="scroll-filterview">
     <section class="accordion" id="filter-section">
       <div class="tab" id="mt-tab">
@@ -131,5 +139,6 @@
 </div>
 
 {% endblock %} {% block script %}
+<script type="module" src="{{ url_for('static', filename='js/lib/d3.v7.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
