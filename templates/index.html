@@ -16,11 +16,11 @@
     <div class="filter-col">ausgewählt</div>
   </div>
   <div class="scroll-filterview">
-    <section class="accordion" id="filter-section">
-      <div class="tab" id="mt-tab">
-        <input type="checkbox" name="mediatype" id="filter-mediatype" checked />
+    <section class="accordion block-on-reload" id="filter-section">
+      <div class="tab js-filter-header" id="mediatypes">
+        <input type="checkbox" name="mediatype" id="filter-mediatype" class="js-filter-checkbox" checked />
         <label for="filter-mediatype" class="tab_label bold mt-c">Medienart</label>
-        <div class="tab__content">
+        <div class="tab__content block-on-reload">
           {% if mediatypes %}
           <ul class="flex-center">
             {% for mt in mediatypes %}
@@ -42,10 +42,10 @@
           {% endif %}
         </div>
       </div>
-      <div class="tab" id="it-tab">
-        <input type="checkbox" name="interactions" id="filter-interaction" checked />
+      <div class="tab js-filter-header" id="interactions">
+        <input type="checkbox" name="interactions" id="filter-interaction" class="js-filter-checkbox" checked />
         <label for="filter-interaction" class="tab_label bold it-c">Interaktionen</label>
-        <div class="tab__content">
+        <div class="tab__content block-on-reload">
           {% if interactions %}
           <ul class="flex-center">
             {% for it in interactions %}
@@ -67,10 +67,10 @@
           {% endif %}
         </div>
       </div>
-      <div class="tab" id="viz-tab">
-        <input type="checkbox" name="visualization" id="filter-visualization" checked />
+      <div class="tab js-filter-header" id="visualizations">
+        <input type="checkbox" name="visualization" id="filter-visualization" class="js-filter-checkbox" checked />
         <label for="filter-visualization" class="tab_label bold viz-c">Visualisierungen</label>
-        <div class="tab__content">
+        <div class="tab__content block-on-reload">
           {% if visualizations %}
           <ul class="flex-center">
             {% for viz in visualizations %}
@@ -94,7 +94,7 @@
       </div>
       <div class="tab hidden" id="filter-reset-tab">
         <input aria-label="Accordeon" type="checkbox" name="accordeon" checked />
-        <div class="tab__content">
+        <div class="tab__content block-on-reload">
           <ul class="flex-center">
             <li></li>
             <li class="flex-center filter-undo">

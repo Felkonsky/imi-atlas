@@ -30,6 +30,37 @@ const resetFiltersElement = document.getElementById('filter-reset');
 let initialData = null;
 // let isImageView;
 
+let currentData = null;
+
+const filterAccordeon = document.getElementById('filter-section');
+const filterHeaders = filterAccordeon.querySelectorAll('.js-filter-header');
+console.log(filterHeaders);
+
+let accordeonOptions = JSON.parse(sessionStorage.getItem('foldCategories')) || Array.from(filterHeaders, (header) => header.id);
+const filterFoldOptions = new Set(accordeonOptions);
+
+setTimeout(unblock, 100);
+
+filterHeaders.forEach((header) => {
+  const headerID = header.id;
+  const checkboxHTMLElement = header.querySelector('input[type="checkbox"]');
+  if (!checkboxHTMLElement) return;
+  checkboxHTMLElement.checked = filterFoldOptions.has(headerID);
+  sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
+
+  checkboxHTMLElement.addEventListener('change', (event) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      filterFoldOptions.add(headerID);
+    } else {
+      filterFoldOptions.delete(headerID);
+    }
+    sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
+    console.info('After clicking', sessionStorage.getItem('foldCategories'));
+    renderGrid(initialData);
+  });
+});
+
 const isInImageViewState = sessionStorage.getItem('objectState');
 let isImageView = isInImageViewState === null || JSON.parse(isInImageViewState);
 
@@ -57,6 +88,7 @@ fetchData(imiApiPath).then((data) => {
     sessionStorage.setItem('initialData', JSON.stringify(data));
   }
   initialData = data;
+  currentData = data;
   renderGrid(data);
 });
 
@@ -81,6 +113,14 @@ document.getElementById('filter-section').addEventListener('click', (event) => {
     // filterFunc.render(initialData, previousFilterElement);
   }
 });
+
+function unblock() {
+  filterAccordeon.classList.remove('block-on-reload');
+  const filterContentHTMLElements = filterAccordeon.querySelectorAll('.tab__content');
+  filterContentHTMLElements.forEach((element) => {
+    element.classList.remove('block-on-reload');
+  });
+}
 
 // Reset filters
 resetFiltersElement.addEventListener('click', function () {

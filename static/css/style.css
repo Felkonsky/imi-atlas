@@ -216,10 +216,15 @@ a {
   padding: 0 5px;
   max-height: 0;
   overflow-y: hidden;
-  transition: max-height var(--animation-speed);
+  transition: all var(--animation-speed);
+  &.block-on-reload {
+    transition: color var(--animation-speed);
+    color: white;
+  }
 }
+
 .tab input:checked ~ .tab__content {
-  max-height: 13rem;
+  max-height: 11rem; /* adjust to higher value in case of more filter options */
 }
 
 .accordion {
@@ -236,6 +241,12 @@ a {
   display: flex;
   color: var(--skd-black);
   cursor: pointer;
+  transition: color var(--animation-speed);
+}
+
+.accordion.block-on-reload .tab_label {
+  color: white;
+  border-bottom-color: white;
 }
 
 .mt-c {
@@ -268,6 +279,11 @@ a {
 .tab input:checked + .tab_label::before {
   transform: translate(-4px, 2px) rotate(-180deg);
 }
+
+.accordion.block-on-reload .tab_label::before {
+  content: '';
+}
+
 .tab__content ul li {
   padding: 0 5px;
   height: 25px;

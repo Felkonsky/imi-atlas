@@ -21,6 +21,7 @@ let activeFilters = JSON.parse(sessionStorage.getItem('activeFilters')) || {};
 
 // Inital collection of all available filters
 const liHTMLElementsArray = document.querySelectorAll('.filter-item');
+
 const allFilters = getAllFilters(liHTMLElementsArray);
 
 /** @type {HTMLDivElement} Wrapper containing the button to reset all active filters */
@@ -185,7 +186,7 @@ function updateGridEvent(data) {
   });
 }
 
-export function render(data, previousFilterElement = null) {
+export function render(data, previousFilterElement = null, isfold = false) {
   const availableFilters = getAvailableFilters(data);
   const unavailableFilters = getUnavailableFilters(availableFilters);
 
