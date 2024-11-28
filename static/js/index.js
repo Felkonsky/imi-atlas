@@ -34,7 +34,7 @@ let currentData = null;
 
 const filterAccordeon = document.getElementById('filter-section');
 const filterHeaders = filterAccordeon.querySelectorAll('.js-filter-header');
-console.log(filterHeaders);
+const grid = document.getElementById('griddy');
 
 let accordeonOptions = JSON.parse(sessionStorage.getItem('foldCategories')) || Array.from(filterHeaders, (header) => header.id);
 const filterFoldOptions = new Set(accordeonOptions);
@@ -56,8 +56,8 @@ filterHeaders.forEach((header) => {
       filterFoldOptions.delete(headerID);
     }
     sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
-    console.info('After clicking', sessionStorage.getItem('foldCategories'));
-    renderGrid(initialData);
+    console.info('After clicking', JSON.parse(sessionStorage.getItem('foldCategories')));
+    glyphFunc.updateGlyphs(initialData);
   });
 });
 
@@ -66,18 +66,27 @@ let isImageView = isInImageViewState === null || JSON.parse(isInImageViewState);
 
 const vizToggleHTMLElement = document.getElementById('object-view-toggle-label');
 const inputHTMLElement = vizToggleHTMLElement.children[0];
+
 if (!isImageView) {
   inputHTMLElement.checked = false;
 }
+
 inputHTMLElement.classList.remove('block-on-reload');
 
 vizToggleHTMLElement.addEventListener('click', (event) => {
   if (event.target === vizToggleHTMLElement) {
     isImageView = !isImageView;
-
     sessionStorage.setItem('objectState', JSON.stringify(isImageView));
     console.info('Toggling the Object View State in Session Cache.');
     renderGrid(initialData);
+
+    if (!isImageView) {
+      const gridItems = grid.querySelectorAll('.grid-item');
+      gridItems.forEach((item) => {
+        console.log(item);
+        item.classList.add('fade-in');
+      });
+    }
   }
 });
 
@@ -108,8 +117,9 @@ document.getElementById('filter-section').addEventListener('click', (event) => {
       filterFunc.clearFilterState(filterType, filterValue);
       previousFilterElement = liHTMLElement;
     }
-    renderGrid(initialData, previousFilterElement);
     filterFunc.updateActiveFiltersCache();
+    renderGrid(initialData, previousFilterElement);
+
     // filterFunc.render(initialData, previousFilterElement);
   }
 });
@@ -133,7 +143,6 @@ resetFiltersElement.addEventListener('click', function () {
 });
 
 function renderGrid(imiObjects, previousFilterElement = null) {
-  const grid = document.getElementById('griddy');
   const filteredData = filterFunc.applyFilters(imiObjects);
   const gridHTML = filteredData
     .map(
