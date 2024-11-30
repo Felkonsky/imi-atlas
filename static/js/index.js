@@ -56,8 +56,7 @@ filterHeaders.forEach((header) => {
       filterFoldOptions.delete(headerID);
     }
     sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
-    console.info('After clicking', JSON.parse(sessionStorage.getItem('foldCategories')));
-    glyphFunc.updateGlyphs(initialData);
+    glyphFunc.createGlyphs(initialData, true);
   });
 });
 
@@ -77,13 +76,12 @@ vizToggleHTMLElement.addEventListener('click', (event) => {
   if (event.target === vizToggleHTMLElement) {
     isImageView = !isImageView;
     sessionStorage.setItem('objectState', JSON.stringify(isImageView));
-    console.info('Toggling the Object View State in Session Cache.');
+    console.info('Toggling the Object View State... Saved in session cache.');
     renderGrid(initialData);
 
     if (!isImageView) {
       const gridItems = grid.querySelectorAll('.grid-item');
       gridItems.forEach((item) => {
-        console.log(item);
         item.classList.add('fade-in');
       });
     }
