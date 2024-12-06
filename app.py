@@ -18,13 +18,13 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
     app.config['IMG_UPLOAD'] = IMAGE_PATH
     
-    # app.config.from_object("config.DevelopmentConfig")
+    app.config.from_object("config.DevelopmentConfig") # comment out for testing
+
 
     # configure_uploads(app, (ms_images, ms_data))
     
     db.init_app(app)
     
-    # imports
     from routes import register_routes
     register_routes(app, db)
     Migrate(app, db)

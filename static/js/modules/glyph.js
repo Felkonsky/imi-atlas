@@ -24,6 +24,8 @@ const white = '#ffffff';
 
 // CREATING GLYPHS
 export function createGlyphs(data, updateMode = null) {
+  d3.select('body').append('div').attr('id', 'd3tooltip').attr('style', 'position: absolute; opacity: 0');
+
   const overallItems = JSON.parse(sessionStorage.getItem('allItems'));
   const overallItemsCategories = Object.keys(overallItems);
   const activeFilters = JSON.parse(sessionStorage.getItem('activeFilters'));
@@ -31,9 +33,7 @@ export function createGlyphs(data, updateMode = null) {
 
   const updateActiveFilters = (donutData) => {
     donutData.forEach((element) => {
-      // console.log(element['category']);
       if (filterFoldOptions.has(element['category'])) {
-        // IF THE ELEMENT WE LOOK AT HAS THE CATEGORY THAT ARE ACTIVE
         const activeFiltersCategoryObject = activeFilters[translator[element['category']]];
         if (activeFiltersCategoryObject) {
           for (const [filterItem, state] of Object.entries(activeFiltersCategoryObject)) {
@@ -85,24 +85,6 @@ export function createGlyphs(data, updateMode = null) {
           }))
         );
       });
-
-      // Fill outer and inner ring with data based on accordeon settings
-      // overallItemsCategories.forEach((category) => {
-      //   if (filterFoldOptions.has(category)) {
-      //     outerRingData.push({ id: id, category, value: overallItems[category].length });
-      //     id = id + 1;
-      //     overallItems[category].forEach((item) => {
-      //       const isPresent = imi[translator[category]].includes(item);
-      //       innerRingData.push({
-      //         item: item,
-      //         category: category,
-      //         value: 1,
-      //         color: isPresent ? categoryColors(category) : white,
-      //         isHighlighted: false,
-      //       });
-      //     });
-      //   }
-      // });
 
       if (activeFilters) {
         updateActiveFilters(innerRingData);
@@ -163,11 +145,10 @@ export function createGlyphs(data, updateMode = null) {
       }
 
       const t = d3.transition().duration(500);
-
       // Draw inner pie chart
       svg
         .selectAll('path.inner')
-        .data(pie(innerRingData), (d) => `${d.data.category}-${d.data.item}`) // Use 'item' as the key
+        .data(pie(innerRingData), (d) => (d.data ? `${d.data.category}-${d.data.item}` : null)) // Use 'item' as the key
         .join(
           (enter) =>
             enter
@@ -181,7 +162,20 @@ export function createGlyphs(data, updateMode = null) {
                 this._current = d;
               })
               .call((enter) => enter.transition(t).attrTween('d', arcTween))
-              .attr('transform', calculateOffset),
+              .attr('transform', calculateOffset)
+              .on('mouseover', function (event, d) {
+                if (d.data.color !== '#ffffff') {
+                  d3.select('#d3tooltip').style('opacity', 1).text(d.data.item);
+                }
+              })
+              .on('mouseout', () => {
+                d3.select('#d3tooltip').style('opacity', 0);
+              })
+              .on('mousemove', (event) => {
+                d3.select('#d3tooltip')
+                  .style('left', event.pageX + 10 + 'px')
+                  .style('top', event.pageY + 10 + 'px');
+              }),
           (update) =>
             update.call((update) =>
               update
@@ -189,6 +183,19 @@ export function createGlyphs(data, updateMode = null) {
                 .attrTween('d', arcTween)
                 .attr('fill', (d) => d.data.color)
                 .attr('transform', calculateOffset)
+                .on('mouseover', function (event, d) {
+                  if (d.data.color !== '#ffffff') {
+                    d3.select('#d3tooltip').transition().duration(200).style('opacity', 1).text(d.data.item);
+                  }
+                })
+                .on('mouseleave', () => {
+                  d3.select('#d3tooltip').style('opacity', 0);
+                })
+                .on('mousemove', function (event) {
+                  d3.select('#d3tooltip')
+                    .style('left', event.pageX + 10 + 'px')
+                    .style('top', event.pageY + 10 + 'px');
+                })
             ),
           (exit) => exit.call((exit) => exit.transition(t).attrTween('d', arcTweenExit).remove())
         );
@@ -209,37 +216,45 @@ export function createGlyphs(data, updateMode = null) {
                 // Save the initial angles for transition
                 this._current = { startAngle: 0, endAngle: 0 };
               })
-              .style('opacity', 0) // Start with opacity 0
-              .transition(t) // Transition to full opacity and animate arc
+              .style('opacity', 0)
+              .transition(t)
               .style('opacity', 1)
               .attrTween('d', function (d) {
                 const interpolate = d3.interpolate(this._current, d);
-                this._current = interpolate(1); // Update _current to the final state
+                this._current = interpolate(1);
                 return function (t) {
                   return outerArc(interpolate(t));
                 };
               }),
           (update) =>
             update
-              .transition(t) // Smoothly update the arc and color
+              .transition(t)
               .attrTween('d', function (d) {
                 const interpolate = d3.interpolate(this._current, d);
-                this._current = interpolate(1); // Update _current to the final state
+                this._current = interpolate(1);
                 return function (t) {
                   return outerArc(interpolate(t));
                 };
               })
               .attr('fill', (d) => categoryColors(d.data.category)),
-          (exit) =>
-            exit
-              .transition(t) // Transition out with fade
-              .style('opacity', 0)
-              .remove()
+          (exit) => exit.transition(t).style('opacity', 0).remove()
         );
 
       setTimeout(() => {
         gridItem.classList.add('show');
       }, 5);
+
+      const svgs = d3.selectAll('svg');
+      d3.select('body').on('mousemove', function (event) {
+        const isInsideAnySVG = Array.from(document.querySelectorAll('svg')).some((svg) => {
+          const rect = svg.getBoundingClientRect();
+          return event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+        });
+
+        if (!isInsideAnySVG) {
+          d3.selectAll('.d3tooltip').style('opacity', 0);
+        }
+      });
     }
   });
 }

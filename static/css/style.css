@@ -827,3 +827,13 @@ li > span > svg {
 .grid-item img {
   will-change: transform;
 }
+
+#d3tooltip {
+  padding: 0.25em 0.5em;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 0.25em;
+  pointer-events: none;
+  transition: opacity var(--animation-speed);
+}
