@@ -837,3 +837,10 @@ li > span > svg {
   pointer-events: none;
   transition: opacity var(--animation-speed);
 }
+
+.filter-inidicator {
+  padding-left: 0.25em;
+  font-weight: normal;
+  color: var(--skd-darkgrey);
+  transition: opacity var(--animation-speed);
+}

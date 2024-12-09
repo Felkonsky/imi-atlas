@@ -19,7 +19,7 @@
     <section class="accordion block-on-reload" id="filter-section">
       <div class="tab js-filter-header" id="mediatypes">
         <input type="checkbox" name="mediatype" id="filter-mediatype" class="js-filter-checkbox" checked />
-        <label for="filter-mediatype" class="tab_label bold mt-c">Medienart</label>
+        <label for="filter-mediatype" class="tab_label bold mt-c">Medienart<span id="js-mediatypes-span" class="filter-inidicator"></span></label>
         <div class="tab__content block-on-reload">
           {% if mediatypes %}
           <ul class="flex-center">
@@ -44,7 +44,7 @@
       </div>
       <div class="tab js-filter-header" id="interactions">
         <input type="checkbox" name="interactions" id="filter-interaction" class="js-filter-checkbox" checked />
-        <label for="filter-interaction" class="tab_label bold it-c">Interaktionen</label>
+        <label for="filter-interaction" class="tab_label bold it-c">Interaktionen<span id="js-interactions-span" class="filter-inidicator"></span></label>
         <div class="tab__content block-on-reload">
           {% if interactions %}
           <ul class="flex-center">
@@ -69,7 +69,7 @@
       </div>
       <div class="tab js-filter-header" id="visualizations">
         <input type="checkbox" name="visualization" id="filter-visualization" class="js-filter-checkbox" checked />
-        <label for="filter-visualization" class="tab_label bold viz-c">Visualisierungen</label>
+        <label for="filter-visualization" class="tab_label bold viz-c">Visualisierungen<span id="js-visualizations-span" class="filter-inidicator"></span></label>
         <div class="tab__content block-on-reload">
           {% if visualizations %}
           <ul class="flex-center">

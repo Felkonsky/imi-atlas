@@ -24,7 +24,9 @@ const white = '#ffffff';
 
 // CREATING GLYPHS
 export function createGlyphs(data, updateMode = null) {
-  d3.select('body').append('div').attr('id', 'd3tooltip').attr('style', 'position: absolute; opacity: 0');
+  if (document.getElementById('d3tooltip') === null) {
+    d3.select('body').append('div').attr('id', 'd3tooltip').attr('style', 'position: absolute; opacity: 0');
+  }
 
   const overallItems = JSON.parse(sessionStorage.getItem('allItems'));
   const overallItemsCategories = Object.keys(overallItems);
@@ -172,30 +174,33 @@ export function createGlyphs(data, updateMode = null) {
                 d3.select('#d3tooltip').style('opacity', 0);
               })
               .on('mousemove', (event) => {
-                d3.select('#d3tooltip')
-                  .style('left', event.pageX + 10 + 'px')
-                  .style('top', event.pageY + 10 + 'px');
-              }),
-          (update) =>
-            update.call((update) =>
-              update
-                .transition(t)
-                .attrTween('d', arcTween)
-                .attr('fill', (d) => d.data.color)
-                .attr('transform', calculateOffset)
-                .on('mouseover', function (event, d) {
-                  if (d.data.color !== '#ffffff') {
-                    d3.select('#d3tooltip').transition().duration(200).style('opacity', 1).text(d.data.item);
-                  }
-                })
-                .on('mouseleave', () => {
-                  d3.select('#d3tooltip').style('opacity', 0);
-                })
-                .on('mousemove', function (event) {
+                if (event.target.getAttribute('fill') !== '#ffffff') {
                   d3.select('#d3tooltip')
                     .style('left', event.pageX + 10 + 'px')
                     .style('top', event.pageY + 10 + 'px');
-                })
+                }
+              }),
+          (update) =>
+            update.call(
+              (update) =>
+                update
+                  .transition(t)
+                  .attrTween('d', arcTween)
+                  .attr('fill', (d) => d.data.color)
+                  .attr('transform', calculateOffset)
+              // .on('mouseover', function (event, d) {
+              //   if (d.data.color !== '#ffffff') {
+              //     d3.select('#d3tooltip').transition().duration(200).style('opacity', 1).text(d.data.item);
+              //   }
+              // })
+              // .on('mouseleave', () => {
+              //   d3.select('#d3tooltip').style('opacity', 0);
+              // })
+              // .on('mousemove', function (event) {
+              //   d3.select('#d3tooltip')
+              //     .style('left', event.pageX + 10 + 'px')
+              //     .style('top', event.pageY + 10 + 'px');
+              // })
             ),
           (exit) => exit.call((exit) => exit.transition(t).attrTween('d', arcTweenExit).remove())
         );

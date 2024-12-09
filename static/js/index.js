@@ -38,6 +38,10 @@ const grid = document.getElementById('griddy');
 
 let accordeonOptions = JSON.parse(sessionStorage.getItem('foldCategories')) || Array.from(filterHeaders, (header) => header.id);
 const filterFoldOptions = new Set(accordeonOptions);
+const allFilterFoldOptions = new Set(Array.from(filterHeaders, (header) => header.id));
+
+const isInImageViewState = sessionStorage.getItem('objectState');
+let isImageView = isInImageViewState === null || JSON.parse(isInImageViewState);
 
 setTimeout(unblock, 100);
 
@@ -47,6 +51,7 @@ filterHeaders.forEach((header) => {
   if (!checkboxHTMLElement) return;
   checkboxHTMLElement.checked = filterFoldOptions.has(headerID);
   sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
+  filterFunc.renderIndictators(headerID, checkboxHTMLElement.checked);
 
   checkboxHTMLElement.addEventListener('change', (event) => {
     const isChecked = event.target.checked;
@@ -56,12 +61,10 @@ filterHeaders.forEach((header) => {
       filterFoldOptions.delete(headerID);
     }
     sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
-    glyphFunc.createGlyphs(initialData, true);
+    if (!isImageView) glyphFunc.createGlyphs(initialData, true);
+    filterFunc.renderIndictators(headerID, isChecked);
   });
 });
-
-const isInImageViewState = sessionStorage.getItem('objectState');
-let isImageView = isInImageViewState === null || JSON.parse(isInImageViewState);
 
 const vizToggleHTMLElement = document.getElementById('object-view-toggle-label');
 const inputHTMLElement = vizToggleHTMLElement.children[0];
@@ -138,6 +141,9 @@ resetFiltersElement.addEventListener('click', function () {
   renderGrid(initialData);
   // filterFunc.render(initialData);
   console.log('Filtersettings have been reset.');
+  filterHeaders.forEach((header) => {
+    filterFunc.renderIndictators(header.id, header.querySelector('input[type="checkbox"]'));
+  });
 });
 
 function renderGrid(imiObjects, previousFilterElement = null) {

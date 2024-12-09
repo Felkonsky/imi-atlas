@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 /**
  * Describes the state of a filter, indicating whether it is selected ("checked") or not ("dechecked"), otherwise it can be ignored
  * @typedef {("checked"|"dechecked")} FilterState
@@ -29,6 +28,14 @@ const resetFiltersContainer = document.getElementById('filter-reset-tab');
 
 /** @type {HTMLDivElement} Container where installations are rendered */
 const gridElement = document.getElementById('griddy');
+const filterSection = document.getElementById('filter-section');
+
+// Helper Object
+const translator = {
+  mediatypes: 'media_type',
+  interactions: 'interaction_type',
+  visualizations: 'visualization_type',
+};
 
 export function applyFilters(data) {
   return data.filter((item) => {
@@ -202,4 +209,19 @@ export function render(data, previousFilterElement = null, isfold = false) {
   disableFilters(unavailableFilters);
   updateResults(data);
   updateGridEvent(data);
+}
+
+export function renderIndictators(category, isUnfold) {
+  const spanElement = filterSection.querySelector(`#js-${category}-span`);
+  if (isUnfold) {
+    spanElement.style.opacity = '0';
+  } else {
+    let filterItem = activeFilters[translator[category]];
+    if (filterItem) {
+      const number = Object.keys(filterItem).length;
+
+      spanElement.innerHTML = `(${number})`;
+      spanElement.style.opacity = '1';
+    }
+  }
 }
