@@ -51,7 +51,7 @@ filterHeaders.forEach((header) => {
   if (!checkboxHTMLElement) return;
   checkboxHTMLElement.checked = filterFoldOptions.has(headerID);
   sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
-  filterFunc.renderIndictators(headerID, checkboxHTMLElement.checked);
+  filterFunc.renderIndicators(headerID, checkboxHTMLElement.checked);
 
   checkboxHTMLElement.addEventListener('change', (event) => {
     const isChecked = event.target.checked;
@@ -62,7 +62,7 @@ filterHeaders.forEach((header) => {
     }
     sessionStorage.setItem('foldCategories', JSON.stringify([...filterFoldOptions]));
     if (!isImageView) glyphFunc.createGlyphs(initialData, true);
-    filterFunc.renderIndictators(headerID, isChecked);
+    filterFunc.renderIndicators(headerID, isChecked);
   });
 });
 
@@ -142,7 +142,7 @@ resetFiltersElement.addEventListener('click', function () {
   // filterFunc.render(initialData);
   console.log('Filtersettings have been reset.');
   filterHeaders.forEach((header) => {
-    filterFunc.renderIndictators(header.id, header.querySelector('input[type="checkbox"]'));
+    filterFunc.renderIndicators(header.id, header.querySelector('input[type="checkbox"]'));
   });
 });
 

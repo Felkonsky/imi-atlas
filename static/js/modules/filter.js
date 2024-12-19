@@ -193,7 +193,7 @@ function updateGridEvent(data) {
   });
 }
 
-export function render(data, previousFilterElement = null, isfold = false) {
+export function render(data, previousFilterElement = null) {
   const availableFilters = getAvailableFilters(data);
   const unavailableFilters = getUnavailableFilters(availableFilters);
 
@@ -211,17 +211,19 @@ export function render(data, previousFilterElement = null, isfold = false) {
   updateGridEvent(data);
 }
 
-export function renderIndictators(category, isUnfold) {
-  const spanElement = filterSection.querySelector(`#js-${category}-span`);
-  if (isUnfold) {
+export function renderIndicators(category, isExpanded) {
+  const spanElement = filterSection?.querySelector(`#js-${category}-span`);
+  if (!spanElement) {
+    console.warn(`Span Element für Kategorie "${category}" nicht gefunden. Anzahl der aktiven Filter wird nicht angezeigt.`);
+    return;
+  }
+  if (isExpanded) {
     spanElement.style.opacity = '0';
   } else {
-    let filterItem = activeFilters[translator[category]];
-    if (filterItem) {
-      const number = Object.keys(filterItem).length;
+    const filterItem = activeFilters?.[translator?.[category]];
+    const number = filterItem ? Object.keys(filterItem).length : 0;
 
-      spanElement.innerHTML = `(${number})`;
-      spanElement.style.opacity = '1';
-    }
+    spanElement.textContent = number === 0 ? '' : `(${number.toString()})`;
+    spanElement.style.opacity = '1';
   }
 }
