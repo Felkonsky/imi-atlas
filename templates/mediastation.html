@@ -4,7 +4,9 @@
     <div class="first-row btn-before"><a href="{{ url_for('index') }}" id="go-back" class="nav-btn btn-back">zurück</a></div>
     <div class="second-row">
       <h1>{{ mediastation.title }}</h1>
-      <!-- <button>favorisieren</button> -->
+      <button id="favorize" onclick="favHandler( '{{mediastation.id}}' )">
+        favorisieren<svg id="icon-fav" class="icon"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-fav"></use></svg>
+      </button>
     </div>
   </div>
 
@@ -108,6 +110,42 @@
 </div>
 {% endblock %} {% block script %}
 <script>
+  const currentID = parseInt('{{ mediastation.id }}');
+  let favorites = new Set(JSON.parse(sessionStorage.getItem('favs'))) || new Set();
+  if (favorites) updateFavIconState(favorites, currentID);
+
+  function favHandler(id) {
+    const imiID = parseInt(id);
+    if (!favorites.has(imiID)) {
+      favorites.add(imiID);
+      sessionStorage.setItem('favs', JSON.stringify(Array.from(favorites)));
+      console.info(`Added IMI with ID ${id} to session favorites.`);
+      updateFavIconState(favorites, id);
+    } else {
+      favorites.delete(imiID);
+      sessionStorage.setItem('favs', JSON.stringify(Array.from(favorites)));
+      console.info(`Removed IMI with ID ${id} from session favorites.`);
+      updateFavIconState(favorites, id);
+
+      const svgFavElement = document.getElementById('icon-fav');
+      const textFavElement = document.getElementById('favorize');
+      svgFavElement.style.color = 'var(--skd-c-lightgray)';
+      textFavElement.childNodes[0].nodeValue = 'favorisieren';
+    }
+  }
+
+  function updateFavIconState(currentFavorites, id) {
+    const imiID = parseInt(id);
+    const svgFavElement = document.getElementById('icon-fav');
+    const textFavElement = document.getElementById('favorize');
+
+    console.log('Hello', currentFavorites, imiID);
+    console.log(currentFavorites.has(imiID));
+    if (currentFavorites.has(imiID)) {
+      svgFavElement.style.color = 'black';
+      textFavElement.childNodes[0].nodeValue = 'favorisiert';
+    }
+  }
   const filterTableHTMLElement = document.querySelector('#js-filter-link');
   filterTableHTMLElement.addEventListener('click', function (event) {
     if (event.target.matches('a')) {

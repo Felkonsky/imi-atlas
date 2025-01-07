@@ -844,3 +844,23 @@ li > span > svg {
   color: var(--skd-darkgrey);
   transition: opacity var(--animation-speed);
 }
+
+#favorize {
+  position: relative;
+  bottom: 0px;
+  right: 0px;
+  background-color: transparent;
+  padding: 0px;
+  margin: 0px;
+  height: 35px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#icon-fav {
+  position: relative;
+  top: 4px;
+  right: 0px;
+  margin-left: 10px;
+  cursor: pointer;
+}
