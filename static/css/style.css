@@ -662,7 +662,7 @@ li > span > svg {
 .filter-item.it-color.checked,
 .filter-item.viz-color.checked {
   align-self: flex-end;
-  /* animation: fadeIn 500ms; */
+  animation: fadeIn 500ms;
 }
 
 .filter-item.mt-color.checked {
@@ -677,7 +677,7 @@ li > span > svg {
 .filter-item.dechecked {
   color: #888;
   align-self: flex-start;
-  /* animation: fadeIn 500ms; */
+  animation: fadeIn 500ms;
 }
 
 .pointer {
@@ -847,14 +847,11 @@ li > span > svg {
 
 #favorize {
   position: relative;
-  bottom: 0px;
+  top: 3px;
   right: 0px;
   background-color: transparent;
-  padding: 0px;
-  margin: 0px;
   height: 35px;
   font-size: 1rem;
-  cursor: pointer;
 }
 
 #icon-fav {
@@ -862,5 +859,4 @@ li > span > svg {
   top: 4px;
   right: 0px;
   margin-left: 10px;
-  cursor: pointer;
 }

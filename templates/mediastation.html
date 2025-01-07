@@ -4,8 +4,8 @@
     <div class="first-row btn-before"><a href="{{ url_for('index') }}" id="go-back" class="nav-btn btn-back">zurück</a></div>
     <div class="second-row">
       <h1>{{ mediastation.title }}</h1>
-      <button id="favorize" onclick="favHandler( '{{mediastation.id}}' )">
-        favorisieren<svg id="icon-fav" class="icon"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-fav"></use></svg>
+      <button class="pointer" id="favorize" onclick="favHandler( '{{mediastation.id}}' )">
+        favorisieren<svg id="icon-fav" class="icon pointer"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-fav"></use></svg>
       </button>
     </div>
   </div>
@@ -138,9 +138,6 @@
     const imiID = parseInt(id);
     const svgFavElement = document.getElementById('icon-fav');
     const textFavElement = document.getElementById('favorize');
-
-    console.log('Hello', currentFavorites, imiID);
-    console.log(currentFavorites.has(imiID));
     if (currentFavorites.has(imiID)) {
       svgFavElement.style.color = 'black';
       textFavElement.childNodes[0].nodeValue = 'favorisiert';
