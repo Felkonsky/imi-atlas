@@ -73,7 +73,7 @@ with app.app_context():
     media_station_1 = MediaStation(
         title='Meisterzeichnungen Hoesch',
         description='Entdecken Sie die faszinierende Welt der Meisterzeichnungen mit unserer interaktiven Medienstation! Auf Tablets und PCs können Sie durch einen benutzerfreundlichen Slider die ausgestellten Werke der Sammlung Hoesch sowie ausgewählte Blätter des Kupferstich-Kabinetts erkunden. Jede Zeichnung wird von informativen Texten begleitet, die Einblicke in die Künstler und deren Schaffensprozess bieten. Tauchen Sie ein in die Kunst der Renaissance und des Barock und erleben Sie hautnah die kreative Kraft der Zeichenkunst. Nutzen Sie die Gelegenheit, Meisterwerke von Michelangelo Anselmi, Andrea Boscoli, Claude Lorrain und vielen anderen aus nächster Nähe zu betrachten.',
-        image_url='prev-meisterzeichnungen.jpg',
+        image_urls=['prev-meisterzeichnungen.jpg', 'prev-karte-liotard.jpg'],
         path_to_exec='meisterzeichnungen.html',
         exhibition_id=exhibition_1.id,
         media_types=[text, image],
@@ -84,7 +84,7 @@ with app.app_context():
     media_station_2 = MediaStation(
         title='Jean-Étienne Liotard (1702-1789) Leben und Reisen',
         description='Die Medienstation bietet Informationen über die vielen Reisen, die Liotard durch Europa unternahm.',
-        image_url='prev-karte-liotard.jpg',
+        image_urls=['prev-karte-liotard.jpg', 'prev-meisterzeichnungen.jpg'],
         path_to_exec='/stations/touchscreen_gallery',
         exhibition_id=exhibition_2.id,
         media_types=[image, text],
@@ -95,7 +95,7 @@ with app.app_context():
     media_station_3 = MediaStation(
         title='Die Produktion von: "2550 Hellrosa"',
         description='Die Medienstation bietet Informationen über die Technik der Pastellmalerei, welche anhand von naturwissenschaftlichen Untersuchungsergebnissen am Schokoladenmädchen erläutert werden. Durch die Unterstützung der traditionsreichen Pariser Manufaktur „La Maison du Pastel“ kann die Fertigung der Pastellkreiden nachvollzogen werden.',
-        image_url='prev-pastell-liotard.jpg',
+        image_urls=['prev-pastell-liotard.jpg'],
         path_to_exec='/stations/audio_guide',
         exhibition_id=exhibition_2.id,
         media_types=[image, text],
@@ -106,7 +106,7 @@ with app.app_context():
     media_station_4 = MediaStation(
         title='Medienstation: 1 Million Rosen für Angela Davis',
         description='Diese interaktive Medienstation bietet Museumsgästen die Möglichkeit, sich umfassend über die Solidaritätskampagne "1 Million Rosen für Angela Davis" zu informieren. Durch eine Kombination verschiedener Medienformate – darunter Videos, Artikel und Fotografien – können Besucher*innen die historische Postkartenaktion und deren Bedeutung entdecken. Die Inhalte sind in einer übersichtlichen Zeitstrahl-Ansicht angeordnet, auf die per Klick oder Touch zugegriffen werden kann. So lassen sich die einzelnen Meilensteine dieser bewegenden Geschichte und die Verbindung zwischen Angela Davis und der DDR auf eine anschauliche und zugängliche Weise erkunden.',
-        image_url='prev-angela-davis.jpg',
+        image_urls=['prev-angela-davis.jpg'],
         path_to_exec='/',
         exhibition_id=exhibition_3.id,
         media_types=[image, text, video],
@@ -116,7 +116,7 @@ with app.app_context():
     media_station_5 = MediaStation(
         title='Skizzenbücher Ernst Barlach',
         description='Diese interaktive Medienstation bietet Museumsgästen die Möglichkeit, sich umfassend über die Solidaritätskampagne "1 Million Rosen für Angela Davis" zu informieren. Durch eine Kombination verschiedener Medienformate – darunter Videos, Artikel und Fotografien – können Besucher*innen die historische Postkartenaktion und deren Bedeutung entdecken. Die Inhalte sind in einer übersichtlichen Zeitstrahl-Ansicht angeordnet, auf die per Klick oder Touch zugegriffen werden kann. So lassen sich die einzelnen Meilensteine dieser bewegenden Geschichte und die Verbindung zwischen Angela Davis und der DDR auf eine anschauliche und zugängliche Weise erkunden.',
-        image_url='prev-barlach.jpg',
+        image_urls=['prev-barlach.jpg'],
         path_to_exec='/',
         exhibition_id=exhibition_4.id,
         media_types=[image],
@@ -136,7 +136,7 @@ with app.app_context():
         media_station = MediaStation(
             title=f'Dummy Interactive Museum Installation {i}',
             description=f'This is a randomly generated description for Media Station {i}.',
-            image_url=f'prev-dummy-{i-5}.jpg',
+            image_urls=[f'prev-dummy-{i-5}.jpg'],
             path_to_exec=f'/',
             exhibition_id=random.choice([1, 2, 3, 4, 5]),  # Assuming the exhibitions are already created
             media_types=random.sample(media_types, k=random.randint(1, 3)),  # Random selection of 1-4 media types

@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block title %} Interaktive Museumsinstallation {% endblock %} {% block content %}
+<div class="ms-container">
+  <div class="ms-header">
+    <div class="first-row btn-before"><a href="{{ url_for('get_mediastation', id=mediastation.id, idx=idx) }}" id="go-back" class="nav-btn btn-back">zurück</a></div>
+    <div class="second-row">
+      <h1>{{ mediastation.title }}</h1>
+      <button class="pointer" id="favorize" onclick="favHandler( '{{mediastation.id}}' )">
+        favorisieren<svg id="icon-fav" class="icon pointer"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-fav"></use></svg>
+      </button>
+    </div>
+  </div>
+  <div class="ms-book">
+    <div id="js-book-page" class="ms-book-page no-overflow fade-in">
+      <div class="slider-control fullscreen-img">
+        <div class="slider-container ms-image change-size">
+          <div id="js-slider" class="slider-wrapper notransition">
+            {% for image in mediastation.image_urls %} {% set idx = loop.index %}
+            <div class="slide">
+              <a href="{{ url_for('get_mediastation_images', id=mediastation.id) }}"><img class="" src="{{ url_for('get_image', img=image) }}" alt="{{mediastation.title}}" /></a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <button class="slider-button prev">
+          <svg id="icon-arrow-left" class="icon pointer"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-arrow-left"></use></svg>
+        </button>
+        <button class="slider-button next">
+          <svg id="icon-arrow-right" class="icon pointer"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-arrow-left"></use></svg>
+        </button>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</div>
+{% block script %}
+
+<script type="module" src="{{ url_for('static', filename='js/modules/slider.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/mediastation.js') }}"></script>
+<script>
+  const wrapperElement = document.getElementById('js-slider');
+  const contentFadeInElement = document.getElementById('js-book-page');
+
+  setTimeout(() => {
+    contentFadeInElement.classList.add('show');
+  }, 10);
+  setTimeout(() => {
+    wrapperElement.classList.remove('notransition');
+  }, 500);
+</script>
+
+{% endblock %}

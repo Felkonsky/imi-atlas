@@ -44,11 +44,11 @@ a {
   --skd-c-lightgray: #e9e8e8;
   /* Dimensions: Overall look and feel */
   --border-width: 2px;
-  --spacing: 4rem;
+  --spacing: 50px;
   --padding-bottom: 1rem;
   --animation-speed: 250ms ease-in-out;
   --grid-item-width: 150px;
-  --header-height: 80px;
+  --header-height: 100px;
   --skd-logo-size: 150px;
   /* Splitter and Accordion */
   --splitter-width: 1px;
@@ -65,14 +65,19 @@ a {
 }
 /* --- Components --- */
 /* Header */
+
+h1 {
+  font-size: 22px;
+}
+
 .catalog-header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: var(--header-height);
-  background-color: #fff;
-  z-index: 1;
+  background-color: transparent;
+  /* z-index: 1; */
 }
 .skd-logo-dot {
   width: var(--skd-logo-size);
@@ -384,8 +389,8 @@ a {
   width: var(--grid-item-width);
   height: var(--grid-item-width);
   transition: all var(--animation-speed);
-  transform-origin: center;
-  transform: scale(1);
+
+  will-change: transform;
 }
 
 .fade-in {
@@ -416,14 +421,6 @@ a {
   height: 100%;
   object-fit: cover;
 }
-/* .grid-object {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  opacity: 0;
-  transform: scale(0.9);
-} */
 
 .highlight {
   z-index: 150;
@@ -432,7 +429,7 @@ a {
 
 #results {
   position: fixed;
-  top: 120px;
+  top: 140px;
   z-index: 1000;
 }
 
@@ -452,6 +449,8 @@ a {
   display: block;
   border-bottom: 2px solid var(--skd-black);
   margin-bottom: 2.5rem;
+  padding-left: 45px;
+  margin-left: 5px;
 }
 
 .ms-header .second-row {
@@ -464,7 +463,12 @@ a {
 .ms-wrapper {
   display: flex;
   width: 100%;
-  overflow: auto;
+  overflow-y: scroll;
+}
+
+.ms-wrapper-no-overflow {
+  display: flex;
+  width: 100%;
 }
 
 .pb-25 {
@@ -489,12 +493,12 @@ a {
 }
 
 .ms-book-page-one {
-  padding-right: 25px;
-  margin-right: 100px;
+  padding: 0 100px 0 50px;
   overflow-y: auto;
 }
 .ms-book-page-two {
-  padding-left: 50px;
+  padding: 0 30px 0 100px;
+  overflow: visible;
 }
 
 .ms-container {
@@ -502,21 +506,32 @@ a {
   flex-direction: column;
   padding: 0 25px;
   width: inherit;
+  margin-top: -27px;
 }
 
 .nav-btn {
+  font-size: 1rem;
   text-decoration: none;
   color: var(--skd-black);
   position: relative;
   left: -20px;
-  padding: 10px;
 }
 
 .btn-back::before {
+  display: inline-block;
   content: var(--icon-arrow-left-line);
+  width: 22px;
+  height: 22px;
   position: relative;
-  left: -10px;
-  top: 3px;
+  top: 2px;
+  transform-origin: center center;
+  transition: transform var(--animation-speed);
+  will-change: transform;
+  transform: scale(0.8);
+}
+
+.btn-back:hover::before {
+  transform: scale(1);
 }
 
 .ms-container h2,
@@ -542,11 +557,11 @@ a {
   padding-right: 25px;
 }
 
-.ms-container img {
+/* .ms-container img {
   width: 100%;
   height: 300px;
   object-fit: cover;
-}
+} */
 
 .ms-play {
   width: 100%;
@@ -595,6 +610,7 @@ a {
 }
 
 .realization {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -603,6 +619,34 @@ a {
   height: 25px;
   cursor: pointer;
   justify-content: center;
+}
+
+.realization::before {
+  position: absolute;
+  content: attr(data-tooltip);
+  color: white;
+  padding: 5px 8px;
+  white-space: nowrap;
+  /* font-size: 11px; */
+  font-weight: 300;
+  background-color: rgba(0, 0, 0, 0.75);
+  height: 25px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transform: translateY(-50%) translateX(-25%);
+  pointer-events: none;
+  transition: opacity 250ms ease, transform 250ms ease-in-out;
+  top: 50%;
+  right: 101%;
+  box-shadow: rgba(0, 0, 0, 0.12) 0 1px 3px, rgba(0, 0, 0, 0.24) 0 1px 2px;
+  justify-content: center;
+  align-items: center;
+  will-change: transform;
+}
+
+.realization:hover::before {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 .realization > a {
@@ -618,6 +662,11 @@ a {
 .filter-item:hover,
 .filter-undo:hover {
   box-shadow: rgba(0, 0, 0, 0.12) 0 1px 3px, rgba(0, 0, 0, 0.24) 0 1px 2px;
+}
+
+.realization:hover .realization-tooltip {
+  background-color: black;
+  width: 200px;
 }
 
 .filter-item:hover .filter-left-arrow,
@@ -824,15 +873,20 @@ li > span > svg {
   width: var(--grid-item-width);
   height: auto;
 }
-.grid-item img {
-  will-change: transform;
-}
+/* .grid-item img {
+  -webkit-backface-visibility: hidden;
+  -ms-transform: translateZ(0); /* IE 9 */
+/* -webkit-transform: translateZ(0); Chrome, Safari, Opera */
+/* transform: translateZ(0); */
+/* will-change: transform; */
 
 #d3tooltip {
   padding: 0.25em 0.5em;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.75);
   color: white;
   font-size: 0.75rem;
+  /* font-size: 11px; */
+  font-weight: 300;
   border-radius: 0.25em;
   pointer-events: none;
   transition: opacity var(--animation-speed);
@@ -847,7 +901,7 @@ li > span > svg {
 
 #favorize {
   position: relative;
-  top: 3px;
+  top: 0px;
   right: 0px;
   background-color: transparent;
   height: 35px;
@@ -858,5 +912,121 @@ li > span > svg {
   position: relative;
   top: 4px;
   right: 0px;
-  margin-left: 10px;
+  margin-left: 7px;
+}
+.slider-control {
+  position: relative;
+  width: inherit;
+  height: inherit;
+}
+/* IMAGE SLIDER */
+.slider-container {
+  position: relative;
+  width: inherit;
+  overflow: hidden;
+}
+.slider-wrapper {
+  display: flex;
+  transition: transform 400ms ease-in-out;
+}
+.slide {
+  min-width: 100%;
+  height: 100%;
+}
+.slide img {
+  display: block;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.slider-button {
+  position: absolute;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  width: 3rem;
+  height: 3rem;
+  outline: none;
+  background-color: transparent;
+  transition: transform var(--animation-speed);
+  transform: scale(0.8);
+  will-change: transform;
+}
+.slider-button:hover {
+  transform: scale(1);
+}
+
+.slider-button {
+  position: absolute;
+  top: calc(50% - 24px);
+}
+.slider-button.prev {
+  left: -66px;
+}
+.slider-button.next {
+  right: -66px;
+}
+
+#icon-arrow-right {
+  transform: scaleX(-1);
+}
+
+.ms-inf th {
+  font-weight: bold;
+}
+
+.first-row {
+  height: 20px;
+}
+
+/* Hide modal by default */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: green;
+  text-align: center; /* optional centering technique */
+  align-items: center;
+  justify-content: center;
+  /* If using flex, you also need `display: flex;` but we'll do that only on :target */
+}
+
+/* Show it when it's the target in the URL:  #overlay-1, #overlay-2, etc. */
+.modal-overlay:target {
+  display: flex; /* now we flexbox-center the content */
+}
+
+/* The enlarged image inside the modal */
+.modal-overlay img {
+  display: block;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin: auto;
+  margin-top: 200px;
+  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid #fff;
+  border-radius: 4px; */
+}
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
+.ms-book-page {
+  height: 100%;
+  width: auto;
+  padding: 0 125px;
+  margin: auto;
+  overflow: hidden;
 }

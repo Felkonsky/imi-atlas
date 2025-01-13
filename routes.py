@@ -86,6 +86,7 @@ def register_routes(app, db):
         
     @app.route("/mediastations/<id>")
     def get_mediastation(id):
+        idx = request.args.get("idx", default=0, type=int)
         mediastation = MediaStation.query.get(id)
         exhibition = Exhibition.query.get(mediastation.exhibition_id)
         
@@ -93,7 +94,20 @@ def register_routes(app, db):
         interactions = db.session.query(Interaction).join(MediaStation.interactions).filter(MediaStation.id == id).all()
         visualizations = db.session.query(Visualization).join(MediaStation.visualizations).filter(MediaStation.id == id).all()
         
-        return render_template("mediastation.html", mediastation=mediastation, id=id, exhibition=exhibition, mediatypes=media_types, interactions=interactions, visualizations=visualizations)
+        return render_template("mediastation.html", mediastation=mediastation, id=id, exhibition=exhibition, mediatypes=media_types, interactions=interactions, visualizations=visualizations, idx=idx)
+    
+    @app.route("/mediastations/images/<id>")
+    def get_mediastation_images(id):
+        idx = request.args.get("idx", default=0, type=int)
+        print(idx)
+        mediastation = MediaStation.query.get(id)
+        exhibition = Exhibition.query.get(mediastation.exhibition_id)
+        
+        media_types = db.session.query(MediaType).join(MediaStation.media_types).filter(MediaStation.id == id).all()
+        interactions = db.session.query(Interaction).join(MediaStation.interactions).filter(MediaStation.id == id).all()
+        visualizations = db.session.query(Visualization).join(MediaStation.visualizations).filter(MediaStation.id == id).all()
+        
+        return render_template("slider.html", mediastation=mediastation, id=id, exhibition=exhibition, mediatypes=media_types, idx=idx, interactions=interactions, visualizations=visualizations)
     
 
     @app.route("/api/mediastations", methods=["GET"])
@@ -104,7 +118,10 @@ def register_routes(app, db):
             ms_data = {
                 "id": ms.id,
                 "name": ms.title,
-                "image": url_for("get_image", img=ms.image_url),
+                "images": [
+                    url_for("get_image", img=image_filename)
+                    for image_filename in ms.image_urls
+                ],
                 "media_type": [media_type.name for media_type in ms.media_types],
                 "visualization_type": [visualization.name for visualization in ms.visualizations],
                 "interaction_type": [interaction.name for interaction in ms.interactions]

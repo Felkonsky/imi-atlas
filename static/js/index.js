@@ -173,7 +173,7 @@ function renderImages(data) {
   data.forEach((imi) => {
     const gridItem = document.querySelector(`.grid-item[filter-id="${imi.id}"]`);
     gridItem.classList.add('fade-in');
-    if (gridItem) gridItem.innerHTML = `<img class="grid-item-img " src="${imi.image}" alt="${imi.name}">`;
+    if (gridItem) gridItem.innerHTML = `<img class="grid-item-img " src="${imi.images[0]}" alt="${imi.name}">`;
     setTimeout(() => {
       gridItem.classList.add('show');
     }, 5);

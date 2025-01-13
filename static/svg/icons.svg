@@ -12,4 +12,7 @@
    <symbol id="icon-fav" viewBox="0 0 22 20">
       <path d="M11 0L13.4697 7.60081H21.4616L14.996 12.2984L17.4656 19.8992L11 15.2016L4.53436 19.8992L7.00402 12.2984L0.538379 7.60081H8.53035L11 0Z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-miterlimit="10"></path>
    </symbol>
+   <symbol id="icon-arrow-left" viewBox="0 0 10 16">
+      <path d="M9 1L2 8L9 15" stroke="black" stroke-width="2" fill="none"></path>
+   </symbol>
 </svg>

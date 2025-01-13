@@ -1,5 +1,6 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.dialects.sqlite import JSON
 
 media_type_association = db.Table('media_type_association',
     db.Column('mediastation_id', db.Integer, db.ForeignKey('mediastation.id'), primary_key=True),
@@ -21,7 +22,7 @@ class MediaStation(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
-    image_url = db.Column(db.Text)
+    image_urls = db.Column(JSON, default=list)
     path_to_exec = db.Column(db.Text)
 
     exhibition_id = db.Column(db.Integer, db.ForeignKey('exhibition.id'), nullable=False) 
