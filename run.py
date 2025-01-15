@@ -14,6 +14,7 @@ if __name__ == "__main__":
     from waitress import serve
     try:
         serve(skd_app, host="0.0.0.0", port=os.getenv("PORT"), threads=100) 
+        # os.getenv("PORT")
     except Exception as e:
         print(f"Error starting waitress: {e}")
 

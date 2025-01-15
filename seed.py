@@ -43,7 +43,20 @@ with app.app_context():
         location='Blockhaus',
         trailer='In seiner ersten Ausstellung verwandelt sich das Archiv der Avantgarden in das Archiv der Träume. Es ist ein Raum der Träume und unheimlichen Visionen, die archiviert, aktiviert, wiederentdeckt, untersucht, ausgestellt und aufgeführt werden. Es ist ein Archiv und gleichzeitig ein Büro, eine Ausstellung, ein aktiver und diskursiver Ort. Es ist ein Labyrinth von Visionen, Ideen, kreativer Prozesse, historischer Zeugnisse und ein Ort der Entfaltung alter Mythen in avantgardistischen Praktiken. Das Archiv der Träume ist ein Ort, an dem ein surrealistischer Impuls des 20. Jahrhunderts erforscht wird. Es hebt die Arbeit der Surrealisten als erste Künstlergruppe hervor, die das Archivieren als avantgardistische Geste entwickelten. Vor einhundert Jahren, im Jahr 1924, veröffentlichte André Breton das Manifest des Surrealismus und im selben Jahr gründete die surrealistische Gruppe das Bureau des Recherches Surréalistes (dt. das Büro für Surrealistische Forschung), um Traumzeugnisse in jeder Form zu sammeln, zu archivieren und zu untersuchen. Die Ausstellung präsentiert avantgardistische Praktiken, die die Grenzen zwischen Realität und Traum, passivem Archiv und aktiven Revolutionen, Vergangenheit, Gegenwart und möglicher Zukunft verwischen. Über 300 Werke, bestehend aus Objekten, Collagen, Zeichnungen, Bücher und Zeitschriften, Fotomontagen und Filmen verdeutlichen die Arbeitsweisen der Surrealistischen Künstlergruppierungen. Ihre Themen verschmolzen mit Ethnologie, Anthropologie, Soziologie und politischem Aktivismus und gaben gleichzeitig Impulse für andere experimentelle Avantgarde-Strömungen der Nachkriegszeit, wie Art Brut, Cobra, Pop Art und Fluxus.'
     )
-    # Create an exhibition
+    exhibition_stillleben = Exhibition(
+        title='Zeitlose Schönheit. Eine Geschichte des Stilllebens',
+        start_date='2023-11-17',
+        end_date='2024-09-01',
+        location='Zwinger',
+        trailer='Im Winckelmann-Forum des Semperbaus präsentiert die Gemäldegalerie Alte Meister etwa 80 Werke aus dem eigenem Bestand in der Ausstellung „Zeitlose Schönheit. Eine Geschichte des Stilllebens“. Die breit gefächerte Schau – mit Meisterwerken von Malerinnen und Malern wie Frans Snyders, Balthasar van der Ast, Jan Davidsz. de Heem, Adriaen van Utrecht, Willem Claesz. Heda, Abraham Mignon oder Rachel Ruysch – beleuchtet umfassend die Gattung „Stillleben“: Seit wann gibt es sie? Was genau macht ein Stillleben aus? Welche Bedeutung, welchen Inhalt und welche Funktion hatten und haben sie heute noch? Welche Allegorien und Symbole verbergen sich in diesen Motiven?'
+    )
+    exhibition_caspar = Exhibition(
+        title='Caspar David Friedrich — Der Zeichner: Caspar David Friedrich. Wo alles begann',
+        start_date='2024-08-24',
+        end_date='2024-11-17',
+        location='Residenzschloss',
+        trailer='Das Kupferstich-Kabinett im Dresdner Residenzschloss lenkt den Blick auf Caspar David Friedrichs künstlerischen Prozess. Friedrichs Zeichnungen sind von großer Einfühlsamkeit und gleichzeitig Genauigkeit geprägt. Sie entstanden auf Wanderungen durch die nähere und weitere landschaftliche Umgebung Dresdens, aber auch während seiner Reisen in die Heimat nach Greifswald und Rügen oder ins Riesengebirge. Wandern und Zeichnen gehören bei Friedrich eng zusammen. Noch heute ist spürbar, wie konzentriert und voller Hingabe Friedrich die Natur in seinen Zeichnungen erfasste. Seine radikale Subjektivität und zugleich hohe Genauigkeit in der Darstellung wirken unvermindert. Die Präsenz seiner Kunst wird vor allem vor den Originalen selbst erfahrbar. Seine Wanderwege werden in der Ausstellung sichtbar und regen dazu an, seinen Pfaden auf eigenen Wanderungen zu folgen.'
+    )
     exhibition_1 = Exhibition(
         title='Anselmi bis Zuccari. Meisterzeichnungen der Sammlung Hoesch zu Gast.',
         start_date='2022-03-03',
@@ -81,13 +94,13 @@ with app.app_context():
         trailer='Alles begann in Dresden. Mit einem Akt künstlerischer Selbstbehauptung: Ausgeschlossen von Akademie und offiziellem Kunstbetrieb in der DDR erklärte sich Ralf Winkler (1939—2017), der später als A.R. Penck weltbekannt werden sollte, eigenmächtig zum Künstler. Er besetzte den „Untergrund“ und entwickelte ein ebenso produktives wie vielseitiges künstlerisches Werk als Maler und Zeichner, Bildhauer und Grafiker, Super-8-Filmer, Musiker und Autor. In seiner Lebens- und Kunstpraxis verband er analytisches und bildnerisches Denken. Ideen aus Philosophie, Naturwissenschaft, Informationstheorie und Technik fusionierte er mit alten und neuen Strategien des Bildermachens sowie einem Gespür für gesellschaftliche und künstlerische Problemlagen zu einer multimedialen Konzeption des „Visuellen Denkens“ – eines Denkens in Bildern. Anhand ausgewählter Werke durchstreift die Ausstellung Pencks Dresdner Zeit bis zu seiner Ausreise 1980. Von der frühen Auseinandersetzung mit Rembrandt und Picasso über die von der deutschen Teilung motivierten Welt- und Systembilder, die universelle Zeichensprache seines Standart- Konzepts mit der typischen Strichfigur bis zum „Ende im Osten“. Pencks Entwicklung ist zudem nicht denkbar ohne den Austausch mit anderen Künstlern in selbstorganisierten Gruppen und Aktionen. In den 1950er Jahren bot ihm der Kreis junger Kunstinteressierter um Jürgen Böttcher erste Orientierung und Ermutigung. 1971 formierte sich die Künstlergruppe „Lücke“ mit gemeinschaftlicher Arbeits- und Ausstellungspraxis und 1978 gehörte Penck zu den Gründungsmitgliedern der Dresdner Obergrabenpresse.'
     )
         
-    db.session.add_all([exhibition_0, exhibition_archiv, exhibition_1, exhibition_2, exhibition_3, exhibition_4, exhibition_5 ])
+    db.session.add_all([exhibition_0, exhibition_archiv, exhibition_stillleben, exhibition_caspar, exhibition_1, exhibition_2, exhibition_3, exhibition_4, exhibition_5 ])
     db.session.commit()
 
 
     # Create media stations
     media_station_0 = MediaStation(
-        title='KI Medienstation: Dresden - Utopia - Dystopia',
+        title='Dresden - Utopia - Dystopia',
         description='Der Canaletto-Blick ist die wohl berühmteste Stadtansicht Dresdens. Wie er in Zukunft aussehen wird, ist freilich ungewiss. Aktuell lässt sich bei einem Besuch der Kinderbiennale »PLANET UTOPIA« im Japanischen Palais und auch hier auf voices erproben, wie sich die künstliche Intelligenz die Zukunft der berühmten Stadtansicht vorstellt. Dafür hat ein Team von Studierenden der TU Dresden ein Format entwickelt, mit dem wir dem Zukunftstraum der KI eine Richtung geben können.',
         image_urls=['planet-utopia-dystopia-1.jpeg', 'planet-utopia-dystopia-2.jpeg', 'planet-utopia-dystopia-3.jpeg'],
         path_to_exec='https://applications.skd.museum/voicesmedia/kinderbienale/utopia/index_fullscreen.html',
@@ -104,6 +117,26 @@ with app.app_context():
         exhibition_id=exhibition_archiv.id,
         media_types=[image, text],
         interactions=[zoom, move],
+        visualizations=[book]
+    )
+    media_station_memento = MediaStation(
+        title='Memento Mori - Ein Totenkopf neben einem Blumenstrauß',
+        description='Die Medienstation zu Jan Davidsz. de Heems „Memento mori. Ein Totenkopf neben einem Blumenstrauß“ (um 1655/60) ermöglicht es Besucherinnen, das Stillleben interaktiv zu erkunden. Durch Tippen auf markierte Bilddetails werden die dargestellten Tiere und Pflanzen benannt und ihre Bedeutung im Kontext von Vergänglichkeit und Sinnbildhaftigkeit erläutert. Die digitalen Informationspunkte veranschaulichen damit die komplexen Allegorien und Symbole, die dieses Vanitas-Gemälde so faszinierend machen.',
+        image_urls=['memento-mori-0.jpeg', 'memento-mori-1.jpeg', 'memento-mori-2.jpeg', 'memento-mori-3.jpeg'],
+        path_to_exec='https://applications.skd.museum/voicesmedia/interactive_mementomori/index_container.html',
+        exhibition_id=exhibition_stillleben.id,
+        media_types=[image, text],
+        interactions=[zoom, move, focus],
+        visualizations=[tiles, map]
+    )
+    media_station_caspar = MediaStation(
+        title='Caspar David Friedrich - Karlsruher Skizzenbuch',
+        description='Das Karlsruher Skizzenbuch ist ein 184 x 118 mm großes Büchlein, in dem Caspar David Friedrich zwischen April und Juni 1804 Motive aus der Dresdner Umgebung festgehalten hat. Einige davon hat er später in einigen seiner heute berühmtesten Gemälde weiterverarbeitet. Für diese interaktive Medieninstallation wurden Animationen erstellt, welche die Verbindung der Motive des Skizzenbuchs zu den Gemälden aufzeigen. Klicken Sie auf die Ansicht des Skizzenbuchs und warten einen kurzen Moment, um das Skizzenbuch durchstöbern zu können.',
+        image_urls=['caspar-ksb-0.jpeg', 'caspar-ksb-1.jpeg', 'caspar-ksb-2.jpeg'],
+        path_to_exec='https://applications.skd.museum/voicesmedia/interactive_kk_ksb/',
+        exhibition_id=exhibition_caspar.id,
+        media_types=[image, text, video],
+        interactions=[zoom, move, focus, connect],
         visualizations=[book]
     )
     media_station_1 = MediaStation(
@@ -140,7 +173,7 @@ with app.app_context():
     )
     
     media_station_4 = MediaStation(
-        title='Medienstation: 1 Million Rosen für Angela Davis',
+        title='1 Million Rosen für Angela Davis',
         description='Diese interaktive Medienstation bietet Museumsgästen die Möglichkeit, sich umfassend über die Solidaritätskampagne "1 Million Rosen für Angela Davis" zu informieren. Durch eine Kombination verschiedener Medienformate – darunter Videos, Artikel und Fotografien – können Besucher*innen die historische Postkartenaktion und deren Bedeutung entdecken. Die Inhalte sind in einer übersichtlichen Zeitstrahl-Ansicht angeordnet, auf die per Klick oder Touch zugegriffen werden kann. So lassen sich die einzelnen Meilensteine dieser bewegenden Geschichte und die Verbindung zwischen Angela Davis und der DDR auf eine anschauliche und zugängliche Weise erkunden.',
         image_urls=['prev-angela-davis.jpg'],
         path_to_exec='/',
@@ -160,7 +193,7 @@ with app.app_context():
         visualizations=[book, timeline]
     )
     
-    db.session.add_all([media_station_0, media_station_avantgard, media_station_1, media_station_2, media_station_3, media_station_4, media_station_5])
+    db.session.add_all([media_station_0, media_station_avantgard, media_station_memento, media_station_caspar, media_station_1, media_station_2, media_station_3, media_station_4, media_station_5])
     db.session.commit()
     
      # Define the list of media types, interactions, and visualizations
@@ -168,7 +201,7 @@ with app.app_context():
     interactions = [zoom, compare, focus, connect, move]
     visualizations = [map, timeline, book, tiles]
     
-    for i in range(6, 26):
+    for i in range(6, 22):
         media_station = MediaStation(
             title=f'Dummy Interactive Museum Installation {i}',
             description=f'This is a randomly generated description for Media Station {i}.',

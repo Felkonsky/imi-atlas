@@ -471,6 +471,12 @@ h1 {
   width: 100%;
 }
 
+.ms-wrapper-media {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
 .pb-25 {
   padding-bottom: 25px;
 }
@@ -929,7 +935,7 @@ li > span > svg {
 }
 .slider-wrapper {
   display: flex;
-  transition: transform 400ms ease-in-out;
+  transition: transform 750ms ease-in-out;
 }
 .slide {
   min-width: 100%;
@@ -1029,9 +1035,9 @@ li > span > svg {
 
 .iframe-container {
   position: relative;
-  height: 80vh;
+  height: 100%;
   overflow: hidden;
-  width: 80%;
+  width: 60%;
   max-width: 2560px;
   margin: 0 auto;
 }
@@ -1042,6 +1048,9 @@ li > span > svg {
   left: 0;
   width: 100%;
   height: 100%;
+  aspect-ratio: 16 / 9;
+
   display: block;
   border: none;
+  object-fit: cover;
 }

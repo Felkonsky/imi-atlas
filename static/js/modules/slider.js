@@ -7,6 +7,10 @@ export function initSlider({ sliderWrapperSelector, slidesSelector, prevButtonSe
   const nextBtn = document.querySelector(nextButtonSelector);
 
   let currentIndex = idx;
+  const totalSlides = slides.length - 1;
+
+  // init
+  sliderWrapper.setAttribute('data-value', currentIndex);
   updateSlidePosition();
 
   function updateSlidePosition() {
@@ -14,24 +18,19 @@ export function initSlider({ sliderWrapperSelector, slidesSelector, prevButtonSe
     sliderWrapper.style.transform = `translateX(${-slideWidth * currentIndex}px)`;
   }
 
+  // update based on button interaction
   nextBtn.addEventListener('click', () => {
-    if (currentIndex < slides.length - 1) {
-      currentIndex++;
-    } else {
-      currentIndex = 0;
-    }
+    currentIndex = currentIndex < totalSlides ? currentIndex + 1 : 0;
+    sliderWrapper.setAttribute('data-value', currentIndex);
     updateSlidePosition();
   });
 
   prevBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-    } else {
-      // wrap around
-      currentIndex = slides.length - 1;
-    }
+    currentIndex = currentIndex > 0 ? currentIndex - 1 : totalSlides;
+    sliderWrapper.setAttribute('data-value', currentIndex);
     updateSlidePosition();
   });
 
+  // resize
   window.addEventListener('resize', updateSlidePosition);
 }

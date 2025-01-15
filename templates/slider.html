@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block title %} Interaktive Museumsinstallation {% endblock %} {% block content %}
 <div class="ms-container">
   <div class="ms-header">
-    <div class="first-row btn-before"><a href="{{ url_for('get_mediastation', id=mediastation.id, idx=idx) }}" id="go-back" class="nav-btn btn-back">zurück</a></div>
+    <div class="first-row btn-before"><a href="{{ url_for('get_mediastation', id=mediastation.id) }}" id="go-back" class="nav-btn btn-back">zurück</a></div>
     <div class="second-row">
       <h1>{{ mediastation.title }}</h1>
       <button class="pointer" id="favorize">
@@ -13,8 +13,8 @@
     <div id="js-book-page" class="ms-book-page no-overflow fade-in">
       <div class="slider-control fullscreen-img">
         <div class="slider-container ms-image change-size">
-          <div id="js-slider" class="slider-wrapper notransition">
-            {% for image in mediastation.image_urls %} {% set idx = loop.index %}
+          <div id="js-slider" class="slider-wrapper notransition" data-value="">
+            {% for image in mediastation.image_urls %}{% set index = loop.index %}
             <div class="slide">
               <a href="{{ url_for('get_mediastation_images', id=mediastation.id) }}"><img class="" src="{{ url_for('get_image', img=image) }}" alt="{{mediastation.title}}" /></a>
             </div>
@@ -43,6 +43,13 @@
 <script type="module">
   import { initSlider } from "{{ url_for('static', filename='js/modules/slider.js') }}";
 
+  const link = document.getElementById('go-back');
+  const slideWrapper = document.getElementById('js-slider');
+
+  link.addEventListener('click', () => {
+    sessionStorage.setItem('recentIdx', JSON.stringify(slideWrapper.getAttribute('data-value')));
+  });
+
   // rendering errors otherwise - i.e. buggy slidess
   window.addEventListener('load', function () {
     let initialSlideIndex = 0;
@@ -58,16 +65,16 @@
       idx: initialSlideIndex,
     });
   });
+
   window.mID = '{{mediastation.id}}';
 
-  const wrapperElement = document.getElementById('js-slider');
   const contentFadeInElement = document.getElementById('js-book-page');
 
   setTimeout(() => {
     contentFadeInElement.classList.add('show');
   }, 10);
   setTimeout(() => {
-    wrapperElement.classList.remove('notransition');
+    slideWrapper.classList.remove('notransition');
   }, 500);
 </script>
 

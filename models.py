@@ -25,7 +25,7 @@ class MediaStation(db.Model, SerializerMixin):
     image_urls = db.Column(JSON, default=list)
     path_to_exec = db.Column(db.Text)
 
-    exhibition_id = db.Column(db.Integer, db.ForeignKey('exhibition.id'), nullable=False) 
+    exhibition_id = db.Column(db.Integer, db.ForeignKey('exhibition.id'), nullable=True) 
     
     media_types = db.relationship('MediaType', secondary=media_type_association, backref=db.backref('mediastation', lazy=True))
     interactions = db.relationship('Interaction', secondary=interaction_association, backref=db.backref('mediastation', lazy=True))

@@ -14,7 +14,7 @@
     <div class="ms-book-page-one">
       <div class="slider-control">
         <div class="slider-container ms-image">
-          <div id="js-slider" class="slider-wrapper notransition">
+          <div id="js-slider" class="slider-wrapper notransition" data-value="">
             {% for image in mediastation.image_urls %}
             <div class="slide">
               <a href="{{ url_for('get_mediastation_images', id=mediastation.id, idx=loop.index-1) }}"><img class="" src="{{ url_for('get_image', img=image) }}" alt="{{mediastation.title}}" /></a>
@@ -139,18 +139,30 @@
 
   // rendering errors otherwise - i.e. buggy slidess
   window.addEventListener('load', function () {
-    let initialSlideIndex = 0;
-    if (window.slideIdx) {
-      initialSlideIndex = parseInt(window.slideIdx);
-    }
+    let initialSlideIdx = 0;
+    const recentSliderIdx = JSON.parse(sessionStorage.getItem('recentIdx'));
 
-    initSlider({
-      sliderWrapperSelector: '.slider-wrapper',
-      slidesSelector: '.slide',
-      prevButtonSelector: '.slider-button.prev',
-      nextButtonSelector: '.slider-button.next',
-      idx: initialSlideIndex,
-    });
+    if (recentSliderIdx) {
+      initialSlideIdx = parseInt(recentSliderIdx);
+      sessionStorage.removeItem('recentIdx');
+      initSlider({
+        sliderWrapperSelector: '.slider-wrapper',
+        slidesSelector: '.slide',
+        prevButtonSelector: '.slider-button.prev',
+        nextButtonSelector: '.slider-button.next',
+        idx: initialSlideIdx,
+      });
+    }
+    setTimeout(() => {
+      wrapperElement.classList.remove('notransition');
+      initSlider({
+        sliderWrapperSelector: '.slider-wrapper',
+        slidesSelector: '.slide',
+        prevButtonSelector: '.slider-button.prev',
+        nextButtonSelector: '.slider-button.next',
+        idx: 0,
+      });
+    }, 500);
   });
 
   const wrapperElement = document.getElementById('js-slider');
@@ -159,9 +171,6 @@
   setTimeout(() => {
     contentFadeInElement.classList.add('show');
   }, 10);
-  setTimeout(() => {
-    wrapperElement.classList.remove('notransition');
-  }, 500);
 </script>
 
 {% endblock %}

@@ -86,7 +86,7 @@ def register_routes(app, db):
         
     @app.route("/mediastations/<id>")
     def get_mediastation(id):
-        idx = request.args.get("idx", default=0, type=int)
+        # idx = request.args.get("idx", default=0, type=int)
         mediastation = MediaStation.query.get(id)
         exhibition = Exhibition.query.get(mediastation.exhibition_id)
         
@@ -94,7 +94,7 @@ def register_routes(app, db):
         interactions = db.session.query(Interaction).join(MediaStation.interactions).filter(MediaStation.id == id).all()
         visualizations = db.session.query(Visualization).join(MediaStation.visualizations).filter(MediaStation.id == id).all()
         
-        return render_template("mediastation.html", mediastation=mediastation, id=id, exhibition=exhibition, mediatypes=media_types, interactions=interactions, visualizations=visualizations, idx=idx)
+        return render_template("mediastation.html", mediastation=mediastation, id=id, exhibition=exhibition, mediatypes=media_types, interactions=interactions, visualizations=visualizations)
     
     @app.route("/mediastations/media/<id>")
     def get_media(id):
