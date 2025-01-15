@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block title %} Interaktive Museumsinstallation {% endblock %} {% block content %}
+<div class="ms-container">
+  <div class="ms-header">
+    <div class="first-row btn-before"><a href="{{ url_for('get_mediastation', id=mediastation.id, idx=idx) }}" id="go-back" class="nav-btn btn-back">zurück</a></div>
+    <div class="second-row">
+      <h1>{{ mediastation.title }}</h1>
+      <button class="pointer" id="favorize">
+        favorisieren<svg id="icon-fav" class="icon pointer"><use href="{{ url_for('static', filename='svg/icons.svg') }}#icon-fav"></use></svg>
+      </button>
+    </div>
+  </div>
+  <div class="ms-wrapper-no-overflow">
+    <div id="js-book-page" class="iframe-container no-overflow fade-in">
+      <iframe class="media-frame" title="Digital content: {{ mediastation.title }}" src="{{ mediastation.path_to_exec }}"></iframe>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  window.mID = '{{mediastation.id}}';
+</script>
+<script type="module" src="{{ url_for('static', filename='js/mediastation.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/modules/favorize.js') }}"></script>
+
+<script>
+  const contentFadeInElement = document.getElementById('js-book-page');
+
+  setTimeout(() => {
+    contentFadeInElement.classList.add('show');
+  }, 10);
+</script>
+
+{% endblock %}

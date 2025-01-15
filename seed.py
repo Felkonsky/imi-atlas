@@ -28,6 +28,14 @@ with app.app_context():
 
     db.session.add_all([text, image, audio, video, object, zoom, compare, focus, connect, move, map, timeline, book, tiles])
 
+
+    exhibition_0 = Exhibition(
+        title='Kinderbiennale "PLANET UTOPIA"',
+        start_date='2024-06-01',
+        end_date='2025-03-30',
+        location='Japanisches Palais',
+        trailer='Willkommen auf PLANET UTOPIA … einem Ort, der zum Mitmachen und Entdecken anregt, phantastische Universen eröffnet und uns durch Raum und Zeit reisen lässt. Wiwollen wir unsere Zukunft gestalten? Wie können wir diese Welt, in der wir leben, zu einem besseren Ort machen? Kaum etwas scheinen wir derzeit dringender zu benötigen als Utopien – Ideen, Träume und Visionen.'
+    )
     # Create an exhibition
     exhibition_1 = Exhibition(
         title='Anselmi bis Zuccari. Meisterzeichnungen der Sammlung Hoesch zu Gast.',
@@ -66,10 +74,21 @@ with app.app_context():
         trailer='Alles begann in Dresden. Mit einem Akt künstlerischer Selbstbehauptung: Ausgeschlossen von Akademie und offiziellem Kunstbetrieb in der DDR erklärte sich Ralf Winkler (1939—2017), der später als A.R. Penck weltbekannt werden sollte, eigenmächtig zum Künstler. Er besetzte den „Untergrund“ und entwickelte ein ebenso produktives wie vielseitiges künstlerisches Werk als Maler und Zeichner, Bildhauer und Grafiker, Super-8-Filmer, Musiker und Autor. In seiner Lebens- und Kunstpraxis verband er analytisches und bildnerisches Denken. Ideen aus Philosophie, Naturwissenschaft, Informationstheorie und Technik fusionierte er mit alten und neuen Strategien des Bildermachens sowie einem Gespür für gesellschaftliche und künstlerische Problemlagen zu einer multimedialen Konzeption des „Visuellen Denkens“ – eines Denkens in Bildern. Anhand ausgewählter Werke durchstreift die Ausstellung Pencks Dresdner Zeit bis zu seiner Ausreise 1980. Von der frühen Auseinandersetzung mit Rembrandt und Picasso über die von der deutschen Teilung motivierten Welt- und Systembilder, die universelle Zeichensprache seines Standart- Konzepts mit der typischen Strichfigur bis zum „Ende im Osten“. Pencks Entwicklung ist zudem nicht denkbar ohne den Austausch mit anderen Künstlern in selbstorganisierten Gruppen und Aktionen. In den 1950er Jahren bot ihm der Kreis junger Kunstinteressierter um Jürgen Böttcher erste Orientierung und Ermutigung. 1971 formierte sich die Künstlergruppe „Lücke“ mit gemeinschaftlicher Arbeits- und Ausstellungspraxis und 1978 gehörte Penck zu den Gründungsmitgliedern der Dresdner Obergrabenpresse.'
     )
         
-    db.session.add_all([exhibition_1, exhibition_2, exhibition_3, exhibition_4, exhibition_5])
+    db.session.add_all([exhibition_0, exhibition_1, exhibition_2, exhibition_3, exhibition_4, exhibition_5])
     db.session.commit()
 
+
     # Create media stations
+    media_station_0 = MediaStation(
+        title='KI Medienstation: Dresden - Utopia - Dystopia',
+        description='Der Canaletto-Blick ist die wohl berühmteste Stadtansicht Dresdens. Wie er in Zukunft aussehen wird, ist freilich ungewiss. Aktuell lässt sich bei einem Besuch der Kinderbiennale »PLANET UTOPIA« im Japanischen Palais und auch hier auf voices erproben, wie sich die künstliche Intelligenz die Zukunft der berühmten Stadtansicht vorstellt. Dafür hat ein Team von Studierenden der TU Dresden ein Format entwickelt, mit dem wir dem Zukunftstraum der KI eine Richtung geben können.',
+        image_urls=['planet-utopia-dystopia-1.jpeg', 'planet-utopia-dystopia-2.jpeg', 'planet-utopia-dystopia-3.jpeg'],
+        path_to_exec='https://applications.skd.museum/voicesmedia/kinderbienale/utopia/index_fullscreen.html',
+        exhibition_id=exhibition_0.id,
+        media_types=[image],
+        interactions=[compare, connect],
+        visualizations=[tiles]
+    )
     media_station_1 = MediaStation(
         title='Meisterzeichnungen Hoesch',
         description='Entdecken Sie die faszinierende Welt der Meisterzeichnungen mit unserer interaktiven Medienstation! Auf Tablets und PCs können Sie durch einen benutzerfreundlichen Slider die ausgestellten Werke der Sammlung Hoesch sowie ausgewählte Blätter des Kupferstich-Kabinetts erkunden. Jede Zeichnung wird von informativen Texten begleitet, die Einblicke in die Künstler und deren Schaffensprozess bieten. Tauchen Sie ein in die Kunst der Renaissance und des Barock und erleben Sie hautnah die kreative Kraft der Zeichenkunst. Nutzen Sie die Gelegenheit, Meisterwerke von Michelangelo Anselmi, Andrea Boscoli, Claude Lorrain und vielen anderen aus nächster Nähe zu betrachten.',
@@ -124,7 +143,7 @@ with app.app_context():
         visualizations=[book, timeline]
     )
     
-    db.session.add_all([media_station_1, media_station_2, media_station_3, media_station_4, media_station_5])
+    db.session.add_all([media_station_0, media_station_1, media_station_2, media_station_3, media_station_4, media_station_5])
     db.session.commit()
     
      # Define the list of media types, interactions, and visualizations

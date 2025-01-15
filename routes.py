@@ -96,18 +96,17 @@ def register_routes(app, db):
         
         return render_template("mediastation.html", mediastation=mediastation, id=id, exhibition=exhibition, mediatypes=media_types, interactions=interactions, visualizations=visualizations, idx=idx)
     
+    @app.route("/mediastations/media/<id>")
+    def get_media(id):
+        mediastation = MediaStation.query.get(id)
+        return render_template("media.html", mediastation=mediastation)
+    
     @app.route("/mediastations/images/<id>")
     def get_mediastation_images(id):
         idx = request.args.get("idx", default=0, type=int)
-        print(idx)
         mediastation = MediaStation.query.get(id)
-        exhibition = Exhibition.query.get(mediastation.exhibition_id)
         
-        media_types = db.session.query(MediaType).join(MediaStation.media_types).filter(MediaStation.id == id).all()
-        interactions = db.session.query(Interaction).join(MediaStation.interactions).filter(MediaStation.id == id).all()
-        visualizations = db.session.query(Visualization).join(MediaStation.visualizations).filter(MediaStation.id == id).all()
-        
-        return render_template("slider.html", mediastation=mediastation, id=id, exhibition=exhibition, mediatypes=media_types, idx=idx, interactions=interactions, visualizations=visualizations)
+        return render_template("slider.html", mediastation=mediastation, idx=idx)
     
 
     @app.route("/api/mediastations", methods=["GET"])

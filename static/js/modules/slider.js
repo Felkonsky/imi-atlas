@@ -7,12 +7,10 @@ export function initSlider({ sliderWrapperSelector, slidesSelector, prevButtonSe
   const nextBtn = document.querySelector(nextButtonSelector);
 
   let currentIndex = idx;
-  console.log('INDDEX', currentIndex);
   updateSlidePosition();
 
   function updateSlidePosition() {
     const slideWidth = slides[0].clientWidth;
-    console.log('SLIDE', slideWidth);
     sliderWrapper.style.transform = `translateX(${-slideWidth * currentIndex}px)`;
   }
 

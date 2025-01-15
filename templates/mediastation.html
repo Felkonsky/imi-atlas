@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <div class="ms-book">
+  <div id="js-book-page" class="ms-book fade-in">
     <div class="ms-book-page-one">
       <div class="slider-control">
         <div class="slider-container ms-image">
@@ -30,7 +30,7 @@
         </button>
       </div>
 
-      <div class="ms-play"><a href="" class="ms-play-btn bold">Medienstation abspielen</a></div>
+      <div class="ms-play"><a href="{{ url_for('get_media', id=mediastation.id) }}" class="ms-play-btn bold">Medienstation abspielen</a></div>
 
       <div class="ms-description pb-25">
         <h2>Beschreibung</h2>
@@ -127,15 +127,38 @@
   </div>
 </div>
 {% endblock %} {% block script %}
+<script>
+  window.mID = '{{mediastation.id}}';
+</script>
 <script type="module" src="{{ url_for('static', filename='js/mediastation.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/modules/slider.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/modules/favorize.js') }}"></script>
 
-<script>
-  window.mID = '{{mediastation.id}}';
+<script type="module">
+  import { initSlider } from "{{ url_for('static', filename='js/modules/slider.js') }}";
+
+  // rendering errors otherwise - i.e. buggy slidess
+  window.addEventListener('load', function () {
+    let initialSlideIndex = 0;
+    if (window.slideIdx) {
+      initialSlideIndex = parseInt(window.slideIdx);
+    }
+
+    initSlider({
+      sliderWrapperSelector: '.slider-wrapper',
+      slidesSelector: '.slide',
+      prevButtonSelector: '.slider-button.prev',
+      nextButtonSelector: '.slider-button.next',
+      idx: initialSlideIndex,
+    });
+  });
 
   const wrapperElement = document.getElementById('js-slider');
+  const contentFadeInElement = document.getElementById('js-book-page');
 
+  setTimeout(() => {
+    contentFadeInElement.classList.add('show');
+  }, 10);
   setTimeout(() => {
     wrapperElement.classList.remove('notransition');
   }, 500);
