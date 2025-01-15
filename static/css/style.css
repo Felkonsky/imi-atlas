@@ -1029,12 +1029,10 @@ li > span > svg {
 
 .iframe-container {
   position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
+  height: 80vh;
   overflow: hidden;
-
-  width: 100%;
-  max-width: 1024px;
+  width: 80%;
+  max-width: 2560px;
   margin: 0 auto;
 }
 

@@ -36,6 +36,13 @@ with app.app_context():
         location='Japanisches Palais',
         trailer='Willkommen auf PLANET UTOPIA … einem Ort, der zum Mitmachen und Entdecken anregt, phantastische Universen eröffnet und uns durch Raum und Zeit reisen lässt. Wiwollen wir unsere Zukunft gestalten? Wie können wir diese Welt, in der wir leben, zu einem besseren Ort machen? Kaum etwas scheinen wir derzeit dringender zu benötigen als Utopien – Ideen, Träume und Visionen.'
     )
+    exhibition_archiv = Exhibition(
+        title='Archiv der Träume. Ein surrealistischer Impuls',
+        start_date='2024-05-05',
+        end_date='2024-09-01',
+        location='Blockhaus',
+        trailer='In seiner ersten Ausstellung verwandelt sich das Archiv der Avantgarden in das Archiv der Träume. Es ist ein Raum der Träume und unheimlichen Visionen, die archiviert, aktiviert, wiederentdeckt, untersucht, ausgestellt und aufgeführt werden. Es ist ein Archiv und gleichzeitig ein Büro, eine Ausstellung, ein aktiver und diskursiver Ort. Es ist ein Labyrinth von Visionen, Ideen, kreativer Prozesse, historischer Zeugnisse und ein Ort der Entfaltung alter Mythen in avantgardistischen Praktiken. Das Archiv der Träume ist ein Ort, an dem ein surrealistischer Impuls des 20. Jahrhunderts erforscht wird. Es hebt die Arbeit der Surrealisten als erste Künstlergruppe hervor, die das Archivieren als avantgardistische Geste entwickelten. Vor einhundert Jahren, im Jahr 1924, veröffentlichte André Breton das Manifest des Surrealismus und im selben Jahr gründete die surrealistische Gruppe das Bureau des Recherches Surréalistes (dt. das Büro für Surrealistische Forschung), um Traumzeugnisse in jeder Form zu sammeln, zu archivieren und zu untersuchen. Die Ausstellung präsentiert avantgardistische Praktiken, die die Grenzen zwischen Realität und Traum, passivem Archiv und aktiven Revolutionen, Vergangenheit, Gegenwart und möglicher Zukunft verwischen. Über 300 Werke, bestehend aus Objekten, Collagen, Zeichnungen, Bücher und Zeitschriften, Fotomontagen und Filmen verdeutlichen die Arbeitsweisen der Surrealistischen Künstlergruppierungen. Ihre Themen verschmolzen mit Ethnologie, Anthropologie, Soziologie und politischem Aktivismus und gaben gleichzeitig Impulse für andere experimentelle Avantgarde-Strömungen der Nachkriegszeit, wie Art Brut, Cobra, Pop Art und Fluxus.'
+    )
     # Create an exhibition
     exhibition_1 = Exhibition(
         title='Anselmi bis Zuccari. Meisterzeichnungen der Sammlung Hoesch zu Gast.',
@@ -74,7 +81,7 @@ with app.app_context():
         trailer='Alles begann in Dresden. Mit einem Akt künstlerischer Selbstbehauptung: Ausgeschlossen von Akademie und offiziellem Kunstbetrieb in der DDR erklärte sich Ralf Winkler (1939—2017), der später als A.R. Penck weltbekannt werden sollte, eigenmächtig zum Künstler. Er besetzte den „Untergrund“ und entwickelte ein ebenso produktives wie vielseitiges künstlerisches Werk als Maler und Zeichner, Bildhauer und Grafiker, Super-8-Filmer, Musiker und Autor. In seiner Lebens- und Kunstpraxis verband er analytisches und bildnerisches Denken. Ideen aus Philosophie, Naturwissenschaft, Informationstheorie und Technik fusionierte er mit alten und neuen Strategien des Bildermachens sowie einem Gespür für gesellschaftliche und künstlerische Problemlagen zu einer multimedialen Konzeption des „Visuellen Denkens“ – eines Denkens in Bildern. Anhand ausgewählter Werke durchstreift die Ausstellung Pencks Dresdner Zeit bis zu seiner Ausreise 1980. Von der frühen Auseinandersetzung mit Rembrandt und Picasso über die von der deutschen Teilung motivierten Welt- und Systembilder, die universelle Zeichensprache seines Standart- Konzepts mit der typischen Strichfigur bis zum „Ende im Osten“. Pencks Entwicklung ist zudem nicht denkbar ohne den Austausch mit anderen Künstlern in selbstorganisierten Gruppen und Aktionen. In den 1950er Jahren bot ihm der Kreis junger Kunstinteressierter um Jürgen Böttcher erste Orientierung und Ermutigung. 1971 formierte sich die Künstlergruppe „Lücke“ mit gemeinschaftlicher Arbeits- und Ausstellungspraxis und 1978 gehörte Penck zu den Gründungsmitgliedern der Dresdner Obergrabenpresse.'
     )
         
-    db.session.add_all([exhibition_0, exhibition_1, exhibition_2, exhibition_3, exhibition_4, exhibition_5])
+    db.session.add_all([exhibition_0, exhibition_archiv, exhibition_1, exhibition_2, exhibition_3, exhibition_4, exhibition_5 ])
     db.session.commit()
 
 
@@ -88,6 +95,16 @@ with app.app_context():
         media_types=[image],
         interactions=[compare, connect],
         visualizations=[tiles]
+    )
+    media_station_avantgard = MediaStation(
+        title='Surrealismus rund um die Welt',
+        description='Bereits in den 1920er-Jahren bildeten verschiedene surrealistische Gruppen ein globales Netzwerk, das durch einen lebhaften Austausch von Druckwerken gekennzeichnet war. In der Zeitschrift Minotaure (1937, Nr. 10, Umschlag von Réne Magritte) wurden Aktivitäten des internationalen Surrealismus in Form von drei Collagen visualisiert. Viele der dort abgebildeten Bücher, Zeitschriften und Flugblätter sind Teil der Sammlung des Archivs der Avantgarden – und in dieser Interaktiven Museumsinstallation digital zusammengestellt.',
+        image_urls=['archiv-der-avantgarden-00.jpeg', 'archiv-der-avantgarden-01.jpeg', 'archiv-der-avantgarden-02.jpeg', 'archiv-der-avantgarden-03.jpeg'],
+        path_to_exec='https://applications.skd.museum/voicesmedia/interactive_ada_minotaure/index_container.html',
+        exhibition_id=exhibition_archiv.id,
+        media_types=[image, text],
+        interactions=[zoom, move],
+        visualizations=[book]
     )
     media_station_1 = MediaStation(
         title='Meisterzeichnungen Hoesch',
@@ -143,7 +160,7 @@ with app.app_context():
         visualizations=[book, timeline]
     )
     
-    db.session.add_all([media_station_0, media_station_1, media_station_2, media_station_3, media_station_4, media_station_5])
+    db.session.add_all([media_station_0, media_station_avantgard, media_station_1, media_station_2, media_station_3, media_station_4, media_station_5])
     db.session.commit()
     
      # Define the list of media types, interactions, and visualizations

@@ -2,7 +2,6 @@
 <script>
   if (!sessionStorage.getItem('allItems')) {
     const allFilterItems = { mediatypes: '{% for mt in mediatypes %}{{ mt.name }},{% endfor %}'.split(',', parseInt('{{ mediatypes | count }}')), interactions: '{% for it in interactions %}{{ it.name }},{% endfor %}'.split(',', parseInt('{{ interactions | count }}')), visualizations: '{% for viz in visualizations %}{{ viz.name }},{% endfor %}'.split(',', parseInt('{{ visualizations | count }}')) };
-    console.log();
     sessionStorage.setItem('allItems', JSON.stringify(allFilterItems));
     console.info('Filter items added to Session Cache: ', allFilterItems);
   }
