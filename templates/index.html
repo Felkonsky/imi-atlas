@@ -1,12 +1,4 @@
-{% extends 'base.html' %} {% block title %} Startseite {% endblock %} {% block content %} {%block head%}
-<script>
-  if (!sessionStorage.getItem('allItems')) {
-    const allFilterItems = { mediatypes: '{% for mt in mediatypes %}{{ mt.name }},{% endfor %}'.split(',', parseInt('{{ mediatypes | count }}')), interactions: '{% for it in interactions %}{{ it.name }},{% endfor %}'.split(',', parseInt('{{ interactions | count }}')), visualizations: '{% for viz in visualizations %}{{ viz.name }},{% endfor %}'.split(',', parseInt('{{ visualizations | count }}')) };
-    sessionStorage.setItem('allItems', JSON.stringify(allFilterItems));
-    console.info('Filter items added to Session Cache: ', allFilterItems);
-  }
-</script>
-{% endblock %}
+{% extends 'base.html' %} {% block title %} Startseite {% endblock %} {% block content %} {%block head%} {% endblock %}
 
 <div id="filterview" class="">
   <div class="header filter-head flex-center" id="filter-header">
@@ -14,7 +6,7 @@
     <div class="filter-col heading bold">Filter</div>
     <div class="filter-col">ausgewählt</div>
   </div>
-  <div class="scroll-filterview">
+  <div class="scroll-filterview scrollable-content">
     <section class="accordion block-on-reload" id="filter-section">
       <div class="tab js-filter-header" id="mediatypes">
         <input type="checkbox" name="mediatype" id="filter-mediatype" class="js-filter-checkbox" checked />
@@ -122,7 +114,7 @@
       </label>
     </div>
   </div>
-  <div class="scroll-objectview">
+  <div class="scroll-objectview scrollable-content">
     <div class="spacer">
       <div class="bold">
         <p class="highlight">
@@ -138,6 +130,13 @@
 </div>
 
 {% endblock %} {% block script %}
+<script>
+  if (!sessionStorage.getItem('allItems')) {
+    const allFilterItems = { mediatypes: '{% for mt in mediatypes %}{{ mt.name }},{% endfor %}'.split(',', parseInt('{{ mediatypes | count }}')), interactions: '{% for it in interactions %}{{ it.name }},{% endfor %}'.split(',', parseInt('{{ interactions | count }}')), visualizations: '{% for viz in visualizations %}{{ viz.name }},{% endfor %}'.split(',', parseInt('{{ visualizations | count }}')) };
+    sessionStorage.setItem('allItems', JSON.stringify(allFilterItems));
+    console.info('Filter items added to Session Cache: ', allFilterItems);
+  }
+</script>
 <script type="module" src="{{ url_for('static', filename='js/lib/d3.v7.min.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}

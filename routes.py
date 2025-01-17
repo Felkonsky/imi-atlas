@@ -86,7 +86,6 @@ def register_routes(app, db):
         
     @app.route("/mediastations/<id>")
     def get_mediastation(id):
-        # idx = request.args.get("idx", default=0, type=int)
         mediastation = MediaStation.query.get(id)
         exhibition = Exhibition.query.get(mediastation.exhibition_id)
         
@@ -103,10 +102,8 @@ def register_routes(app, db):
     
     @app.route("/mediastations/images/<id>")
     def get_mediastation_images(id):
-        idx = request.args.get("idx", default=0, type=int)
         mediastation = MediaStation.query.get(id)
-        
-        return render_template("slider.html", mediastation=mediastation, idx=idx)
+        return render_template("slider.html", mediastation=mediastation)
     
 
     @app.route("/api/mediastations", methods=["GET"])

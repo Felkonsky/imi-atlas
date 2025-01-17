@@ -20,7 +20,6 @@
       // Define global variables using Jinja2-rendered paths
       window.imiApiPath = "{{ url_for('get_all_mediastations') }}";
       window.imiBasePath = "{{ url_for('get_mediastation', id='') }}";
-      window.slideIdx = '{{ idx }}';
     </script>
     {% block head %} {% endblock %}
   </head>
@@ -38,7 +37,12 @@
       </span>
     </header>
     <main id="main-content" class="main-content">{%block content%} {% endblock %}</main>
-
-    {% block script %}{% endblock %}
+    <script>
+      const logoElement = document.querySelector('.skd-brand');
+      logoElement.addEventListener('click', () => {
+        location.href = "{{url_for('index')}}";
+      });
+    </script>
+    {% block script %} {% endblock %}
   </body>
 </html>

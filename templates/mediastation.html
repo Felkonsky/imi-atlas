@@ -17,7 +17,7 @@
           <div id="js-slider" class="slider-wrapper notransition" data-value="">
             {% for image in mediastation.image_urls %}
             <div class="slide">
-              <a href="{{ url_for('get_mediastation_images', id=mediastation.id, idx=loop.index-1) }}"><img class="" src="{{ url_for('get_image', img=image) }}" alt="{{mediastation.title}}" /></a>
+              <a href="{{ url_for('get_mediastation_images', id=mediastation.id) }}"><img class="" src="{{ url_for('get_image', img=image) }}" alt="{{mediastation.title}}" /></a>
             </div>
             {% endfor %}
           </div>
@@ -136,36 +136,44 @@
 
 <script type="module">
   import { initSlider } from "{{ url_for('static', filename='js/modules/slider.js') }}";
+  const wrapperElement = document.getElementById('js-slider');
+  let initialSlideIdx = 1;
+  const recentSliderIdx = JSON.parse(sessionStorage.getItem('recentIdx'));
 
   // rendering errors otherwise - i.e. buggy slidess
   window.addEventListener('load', function () {
-    let initialSlideIdx = 0;
-    const recentSliderIdx = JSON.parse(sessionStorage.getItem('recentIdx'));
+    wrapperElement.addEventListener('click', () => {
+      sessionStorage.setItem('recentIdx', JSON.stringify(wrapperElement.getAttribute('data-value')));
+      console.info(`Added image-index of ${wrapperElement.getAttribute('data-value')} to session Storage.`);
+    });
 
     if (recentSliderIdx) {
+      const slides = document.querySelectorAll('.slide');
+      console.log('JA Es gab den index', recentSliderIdx);
       initialSlideIdx = parseInt(recentSliderIdx);
       sessionStorage.removeItem('recentIdx');
-      initSlider({
-        sliderWrapperSelector: '.slider-wrapper',
-        slidesSelector: '.slide',
-        prevButtonSelector: '.slider-button.prev',
-        nextButtonSelector: '.slider-button.next',
-        idx: initialSlideIdx,
-      });
     }
+    initSlider({
+      sliderWrapperSelector: '.slider-wrapper',
+      slidesSelector: '.slide',
+      prevButtonSelector: '.slider-button.prev',
+      nextButtonSelector: '.slider-button.next',
+      idx: initialSlideIdx,
+    });
+
     setTimeout(() => {
       wrapperElement.classList.remove('notransition');
-      initSlider({
-        sliderWrapperSelector: '.slider-wrapper',
-        slidesSelector: '.slide',
-        prevButtonSelector: '.slider-button.prev',
-        nextButtonSelector: '.slider-button.next',
-        idx: 0,
-      });
+      const buttonLeft = document.querySelector('.slider-button.prev');
+
+      if (recentSliderIdx > 1) {
+        for (let i = 1; i < recentSliderIdx; i++) {
+          buttonLeft.click();
+          wrapperElement.style.transition = 'transform 750ms ease-in-out';
+        }
+      }
     }, 500);
   });
 
-  const wrapperElement = document.getElementById('js-slider');
   const contentFadeInElement = document.getElementById('js-book-page');
 
   setTimeout(() => {

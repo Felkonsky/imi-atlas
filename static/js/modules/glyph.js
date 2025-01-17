@@ -28,8 +28,13 @@ export function createGlyphs(data, updateMode = null) {
     d3.select('body').append('div').attr('id', 'd3tooltip').attr('style', 'position: absolute; opacity: 0');
   }
 
-  const overallItems = JSON.parse(sessionStorage.getItem('allItems'));
-  const overallItemsCategories = Object.keys(overallItems);
+  const overallItems = JSON.parse(sessionStorage.getItem('allItems')); // sometimes null/ undefined here???
+  let overallItemsCategories;
+  if (overallItems) {
+    overallItemsCategories = Object.keys(overallItems);
+  } else {
+    console.error('Could not retrieve the overall filter items from session cache, reload helps... #bugfix');
+  }
   const activeFilters = JSON.parse(sessionStorage.getItem('activeFilters'));
   const filterFoldOptions = new Set(JSON.parse(sessionStorage.getItem('foldCategories')));
 

@@ -14,9 +14,9 @@
       <div class="slider-control fullscreen-img">
         <div class="slider-container ms-image change-size">
           <div id="js-slider" class="slider-wrapper notransition" data-value="">
-            {% for image in mediastation.image_urls %}{% set index = loop.index %}
+            {% for image in mediastation.image_urls %}
             <div class="slide">
-              <a href="{{ url_for('get_mediastation_images', id=mediastation.id) }}"><img class="" src="{{ url_for('get_image', img=image) }}" alt="{{mediastation.title}}" /></a>
+              <img class="" src="{{ url_for('get_image', img=image) }}" alt="{{mediastation.title}}" />
             </div>
             {% endfor %}
           </div>
@@ -45,25 +45,28 @@
 
   const link = document.getElementById('go-back');
   const slideWrapper = document.getElementById('js-slider');
+  const recentIDX = JSON.parse(sessionStorage.getItem('recentIdx'));
 
+  // update slide index on clicking the back-btn
   link.addEventListener('click', () => {
     sessionStorage.setItem('recentIdx', JSON.stringify(slideWrapper.getAttribute('data-value')));
+    console.info(`Added image-index of ${slideWrapper.getAttribute('data-value')} to session Storage.`);
   });
 
   // rendering errors otherwise - i.e. buggy slidess
   window.addEventListener('load', function () {
-    let initialSlideIndex = 0;
-    if (window.slideIdx) {
-      initialSlideIndex = parseInt(window.slideIdx);
+    if (recentIDX) {
+      const recentIdx = parseInt(recentIDX);
+      console.log(recentIdx);
+      initSlider({
+        sliderWrapperSelector: '.slider-wrapper',
+        slidesSelector: '.slide',
+        prevButtonSelector: '.slider-button.prev',
+        nextButtonSelector: '.slider-button.next',
+        idx: recentIdx,
+        effect: true,
+      });
     }
-
-    initSlider({
-      sliderWrapperSelector: '.slider-wrapper',
-      slidesSelector: '.slide',
-      prevButtonSelector: '.slider-button.prev',
-      nextButtonSelector: '.slider-button.next',
-      idx: initialSlideIndex,
-    });
   });
 
   window.mID = '{{mediastation.id}}';

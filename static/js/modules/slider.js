@@ -1,36 +1,73 @@
-// slider.js
-
 export function initSlider({ sliderWrapperSelector, slidesSelector, prevButtonSelector, nextButtonSelector, idx }) {
   const sliderWrapper = document.querySelector(sliderWrapperSelector);
-  const slides = document.querySelectorAll(slidesSelector);
+  let slides = document.querySelectorAll(slidesSelector);
+  let slideWidth = slides[0].clientWidth;
+  let currentIndex = idx;
+
   const prevBtn = document.querySelector(prevButtonSelector);
   const nextBtn = document.querySelector(nextButtonSelector);
 
-  let currentIndex = idx;
-  const totalSlides = slides.length - 1;
+  // Clone slides
+  const firstSlideClone = slides[0].cloneNode(true);
+  const lastSlideClone = slides[slides.length - 1].cloneNode(true);
 
-  // init
+  sliderWrapper.appendChild(firstSlideClone);
+  sliderWrapper.insertBefore(lastSlideClone, slides[0]);
+  // Re-select slides after cloning
+  slides = sliderWrapper.querySelectorAll(slidesSelector);
+
+  // We now have slides.length = original slides + 2
+  const totalRealSlides = slides.length - 2; // minus the 2 clones
+
+  // Start at index = 1 (the first real slide)
   sliderWrapper.setAttribute('data-value', currentIndex);
+
+  // Initialize position
   updateSlidePosition();
 
+  // Next button
+  nextBtn.addEventListener('click', () => {
+    if (currentIndex < totalRealSlides + 1) {
+      currentIndex++;
+      // sliderWrapper.setAttribute('data-value', currentIndex);
+      sliderWrapper.style.transition = 'transform 0.4s ease-in-out';
+      updateSlidePosition();
+    }
+  });
+
+  // Prev button
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      // sliderWrapper.setAttribute('data-value', currentIndex);
+      sliderWrapper.style.transition = 'transform 0.4s ease-in-out';
+      updateSlidePosition();
+    }
+  });
+
+  // Listen for transition end to handle the “jump”
+  sliderWrapper.addEventListener('transitionend', () => {
+    if (currentIndex === 0) {
+      // Cloned last slide. Jump to the real last slide
+      sliderWrapper.style.transition = 'none';
+      currentIndex = totalRealSlides;
+      updateSlidePosition();
+    } else if (currentIndex === totalRealSlides + 1) {
+      // Cloned first slide. Jump to the real first slide
+      sliderWrapper.style.transition = 'none';
+
+      currentIndex = 1;
+      updateSlidePosition();
+    }
+    sliderWrapper.setAttribute('data-value', currentIndex);
+  });
+
+  window.addEventListener('resize', () => {
+    slideWidth = slides[0].clientWidth;
+    updateSlidePosition();
+  });
+
   function updateSlidePosition() {
-    const slideWidth = slides[0].clientWidth;
     sliderWrapper.style.transform = `translateX(${-slideWidth * currentIndex}px)`;
   }
-
-  // update based on button interaction
-  nextBtn.addEventListener('click', () => {
-    currentIndex = currentIndex < totalSlides ? currentIndex + 1 : 0;
-    sliderWrapper.setAttribute('data-value', currentIndex);
-    updateSlidePosition();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    currentIndex = currentIndex > 0 ? currentIndex - 1 : totalSlides;
-    sliderWrapper.setAttribute('data-value', currentIndex);
-    updateSlidePosition();
-  });
-
-  // resize
-  window.addEventListener('resize', updateSlidePosition);
 }

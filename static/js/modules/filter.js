@@ -129,7 +129,7 @@ function updateActiveFiltersStyle(liHTMLElement, filterState) {
 export function highlightFilter(types, highlightClass) {
   types.forEach((type) => {
     const liElement = document.querySelector(`[data-value="${type}"]`);
-    if (liElement) liElement.classList.add(highlightClass); // Ensure the element exists before adding class
+    if (liElement && !liElement.classList.contains('checked')) liElement.classList.add(highlightClass); // Ensure the element exists before adding class
   });
 }
 
