@@ -16,6 +16,23 @@
     <link rel="apple-touch-icon" type="image/png" sizes="167x167" href="{{ url_for('static', filename='favicons/favicon_skd_167.png') }}" />
     <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="{{ url_for('static', filename='favicons/favicon_skd_180.png') }}" />
 
+    <!-- Hotjar Tracking Code for https://imi-atlas.onrender.com -->
+    <script>
+      (function (h, o, t, j, a, r) {
+        h.hj =
+          h.hj ||
+          function () {
+            (h.hj.q = h.hj.q || []).push(arguments);
+          };
+        h._hjSettings = { hjid: 5273525, hjsv: 6 };
+        a = o.getElementsByTagName('head')[0];
+        r = o.createElement('script');
+        r.async = 1;
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+        a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+    </script>
+
     <script>
       // Define global variables using Jinja2-rendered paths
       window.imiApiPath = "{{ url_for('get_all_mediastations') }}";
