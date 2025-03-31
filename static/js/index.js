@@ -164,7 +164,6 @@ function renderGrid(imiObjects, previousFilterElement = null) {
   if (isImageView) {
     renderImages(filteredData);
   } else {
-    // glyphFunc.render(filteredData);
     glyphFunc.createGlyphs(filteredData);
   }
 }
