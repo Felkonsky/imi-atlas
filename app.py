@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import os
+# import os
 
 # SECRET_KEY = os.getenv("SECRET_KEY")
 # DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URI")
