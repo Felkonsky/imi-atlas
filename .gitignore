@@ -3,5 +3,4 @@ __pycache__
 .vscode/
 *.pyc
 .DS_Store
-config.py
 uploads/data/
