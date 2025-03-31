@@ -21,7 +21,7 @@ with app.app_context():
     book = Visualization(name='Buch')
     
     # zur db session hinzufügen bevor diese genutzt werden von den IMIs
-    db.session.add_all([text, image, audio, object, zoom, compare, focus, maps, timeline, book])
+    db.session.add_all([text, image, audio, zoom, compare, focus, maps, timeline, book])
 
     # Nachfolgend werden Ausstellungen definiert
     exhibition_0 = Exhibition(
@@ -111,9 +111,9 @@ with app.app_context():
     db.session.commit()
     
      # Define the list of media types, interactions, and visualizations
-    media_types = [text, image, audio, object]
+    media_types = [text, image, audio]
     interactions = [zoom, compare, focus]
-    visualizations = [map, timeline, book]
+    visualizations = [maps, timeline, book]
     
     # Bilder werden generisch gelinked auf Basis der Bilder in 'uploads/images/*'
     for i in range(6, 22):
