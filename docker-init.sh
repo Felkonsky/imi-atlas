@@ -5,9 +5,7 @@ if [ ! -f "instance/medienatlas.db" ]; then
     flask db init
     flask db migrate -m "Initial migration"
     flask db upgrade
-
-    python seed.py
-    echo "Database seeded..."
+    python seed4franzi.py
 fi
 
 echo "Starting the application..."
